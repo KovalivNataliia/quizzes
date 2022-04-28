@@ -8,7 +8,8 @@
       "@services/*": ["src/app/services/*"],
       "@guards/*": ["src/app/guards/*"],
       "@modules/*": ["src/app/modules/*"],
-      "@shared/*": ["src/app/shared/*"]
+      "@shared/*": ["src/app/shared/*"],
+      "@pipes/*": ["src/app/pipes/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
