@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageModule } from '@modules/home-page.module';
+import { QuizPageModule } from '@modules/quiz-page.module';
+import { QuizService } from '@services/quiz.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -15,9 +18,11 @@ import { HomePageModule } from '@modules/home-page.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HomePageModule
+    HttpClientModule,
+    HomePageModule,
+    QuizPageModule
   ],
-  providers: [],
+  providers: [QuizService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
