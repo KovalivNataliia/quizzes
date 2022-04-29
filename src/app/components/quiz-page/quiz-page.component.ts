@@ -14,7 +14,7 @@ export class QuizPageComponent {
   currentQuestion$: Observable<string>;
   currentAnswers$: Observable<string[]>;
 
-  constructor(private quizService: QuizService) {
+  constructor(public quizService: QuizService) {
     this.questionCount$ = this.quizService.state$.pipe(
       map((state) => state.currentQuiz.length)
     );
@@ -25,7 +25,7 @@ export class QuizPageComponent {
       map((state) => state.currentQuiz[state.currentQuestionIndex].question)
     );
     this.currentAnswers$ = this.quizService.state$.pipe(
-      map((state) => state.answers)
+      map((state) => state.currentAnswers)
     );
   }
 

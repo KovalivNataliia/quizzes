@@ -13,15 +13,17 @@ export class QuizService {
 
   randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   state$!: BehaviorSubject<QuizState>;
+  answers!: string[][];
 
   constructor(private http: HttpClient, private router: Router) { }
 
   getRandomQuiz(): void {
     this.http.get(this.randomQuizUrl).pipe(
       map((response: any) => response)).subscribe(data => {
+        this.answers = this.shuffleAnswers(data.results);
         this.state$ = new BehaviorSubject<QuizState>({
           currentQuiz: data.results,
-          answers: this.shuffleAnswers(data.results[0]),
+          currentAnswers: this.answers[0],
           currentQuestionIndex: 0
         })
         this.router.navigate(['/quiz']);
@@ -40,39 +42,38 @@ export class QuizService {
     const state = this.getState();
     const canChange = state.currentQuestionIndex !== state.currentQuiz.length - 1;
     const newAnswers = canChange
-      ? this.shuffleAnswers(state.currentQuiz[state.currentQuestionIndex + 1])
-      : state.answers;
+      ? this.answers[state.currentQuestionIndex + 1]
+      : this.answers[state.currentQuestionIndex];
     const newcurrentQuestionIndex = canChange
       ? state.currentQuestionIndex + 1
       : state.currentQuestionIndex;
     this.setState({
       currentQuestionIndex: newcurrentQuestionIndex,
-      answers: newAnswers
+      currentAnswers: newAnswers
     });
   }
 
   previousQuestion(): void {
     const state = this.getState();
-    const canChange = state.currentQuestionIndex !== 0;
-    const newAnswers = canChange
-      ? this.shuffleAnswers(state.currentQuiz[state.currentQuestionIndex - 1])
-      : state.answers;
-    const newcurrentQuestionIndex = canChange
-      ? state.currentQuestionIndex - 1
-      : state.currentQuestionIndex;
+    const newAnswers = this.answers[state.currentQuestionIndex - 1];
+    const newcurrentQuestionIndex = state.currentQuestionIndex - 1;
     this.setState({
       currentQuestionIndex: newcurrentQuestionIndex,
-      answers: newAnswers
+      currentAnswers: newAnswers
     });
   }
 
-  shuffleAnswers(quizData: QuizItem): string[] {
-    let answers = [...quizData.incorrect_answers, quizData.correct_answer];
-    for (let i = answers.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [answers[i], answers[j]] = [answers[j], answers[i]];
+  shuffleAnswers(quizData: QuizItem[]): string[][] {
+    const allAnswers = [];
+    for (let quiz of quizData) {
+      let answers = [...quiz.incorrect_answers, quiz.correct_answer];
+      for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+      }
+      allAnswers.push(answers);
     }
-    return answers
+    return allAnswers
   }
 
 }

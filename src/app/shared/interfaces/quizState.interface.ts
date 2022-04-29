@@ -2,6 +2,6 @@ import { QuizItem } from '@shared/interfaces/quizItem.interface';
 
 export interface QuizState {
   currentQuiz: QuizItem[],
-  answers: string[],
+  currentAnswers: string[],
   currentQuestionIndex: number
 }
