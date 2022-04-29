@@ -24,7 +24,8 @@ export class QuizService {
         this.state$ = new BehaviorSubject<QuizState>({
           currentQuiz: data.results,
           currentAnswers: this._answers[0],
-          currentQuestionIndex: 0
+          currentQuestionIndex: 0,
+          pointsPerQuestion: 100
         })
         this.router.navigate(['/quiz']);
       });

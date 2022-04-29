@@ -13,6 +13,7 @@ export class QuizPageComponent {
   currentQuestionIndex$: Observable<number>;
   currentQuestion$: Observable<string>;
   currentAnswers$: Observable<string[]>;
+  userAnswers: {[key: string]: string} = {};
 
   constructor(private quizService: QuizService) {
     this.questionCount$ = this.quizService.state$.pipe(
@@ -37,6 +38,11 @@ export class QuizPageComponent {
     this.quizService.previousQuestion();
   }
 
+  setAnswer(answer: string): void {
+    const state = this.quizService.getState();
+    this.userAnswers[state.currentQuestionIndex] = answer;
+  }
+
   isFirstQuestion(): boolean {
     return !this.quizService.getState().currentQuestionIndex;
   }
@@ -44,6 +50,11 @@ export class QuizPageComponent {
   isLastQuestion(): boolean {
     const state = this.quizService.getState();
     return state.currentQuestionIndex === state.currentQuiz.length - 1;
+  }
+
+  isAlreadyChecked(answer?: string): boolean {
+    const state = this.quizService.getState();
+    return this.userAnswers[state.currentQuestionIndex] === answer;
   }
 
 }

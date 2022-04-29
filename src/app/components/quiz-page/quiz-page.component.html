@@ -4,7 +4,8 @@
   </h2>
   <p class="question">{{ (currentQuestion$ | async) | decodeHTML }}</p>
   <div class="radio-btn-container">
-    <mat-radio-button class="radio-btn" *ngFor="let answer of currentAnswers$ | async">
+    <mat-radio-button class="radio-btn" *ngFor="let answer of currentAnswers$ | async" (change)="setAnswer(answer)"
+      [checked]="isAlreadyChecked(answer)">
       {{ answer | decodeHTML }}
     </mat-radio-button>
   </div>
@@ -13,7 +14,8 @@
       [disabled]="isFirstQuestion()">
       Previous
     </button>
-    <button *ngIf="!isLastQuestion()" class="next-btn btn" mat-raised-button (click)="nextQuestion()">
+    <button *ngIf="!isLastQuestion()" class="next-btn btn" mat-raised-button (click)="nextQuestion()"
+      [disabled]="isAlreadyChecked()">
       Next
     </button>
     <button *ngIf="isLastQuestion()" class="next-btn btn" mat-raised-button color="primary">
