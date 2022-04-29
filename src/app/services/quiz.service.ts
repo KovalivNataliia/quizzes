@@ -36,13 +36,8 @@ export class QuizService {
 
   nextQuestion(): void {
     const state = this.getState();
-    const canChange = state.currentQuestionIndex !== state.currentQuiz.length - 1;
-    const newAnswers = canChange
-      ? this._answers[state.currentQuestionIndex + 1]
-      : this._answers[state.currentQuestionIndex];
-    const newcurrentQuestionIndex = canChange
-      ? state.currentQuestionIndex + 1
-      : state.currentQuestionIndex;
+    const newAnswers = this._answers[state.currentQuestionIndex + 1];
+    const newcurrentQuestionIndex = state.currentQuestionIndex + 1;
     this._setState({
       currentQuestionIndex: newcurrentQuestionIndex,
       currentAnswers: newAnswers

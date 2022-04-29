@@ -41,4 +41,9 @@ export class QuizPageComponent {
     return !this.quizService.getState().currentQuestionIndex;
   }
 
+  isLastQuestion(): boolean {
+    const state = this.quizService.getState();
+    return state.currentQuestionIndex === state.currentQuiz.length - 1;
+  }
+
 }
