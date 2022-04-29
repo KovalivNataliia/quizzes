@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .questions-count {
+    font-size: 35px;
+    margin: 0;
+  }
+  .question {
+    display: flex;
+    align-items: center;
+    height: 75px;
+    font-size: 25px;
+    margin: 20px 80px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .radio-btn-container {
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 25px;
+  }
+  .btn-container {
+    margin: 30px 0;
+    .btn {
+      width: 150px;
+    }
+  }
+}
+
+:host ::ng-deep .mat-radio-container{
+  height: 35px;
+  width: 35px;
+}
+:host ::ng-deep .mat-radio-outer-circle{
+  height: 35px;
+  width: 35px;
+}
+:host ::ng-deep .mat-radio-inner-circle{
+  height: 35px;
+  width: 35px;
+}
+:host ::ng-deep .mat-radio-button .mat-radio-ripple{
+  height: 70px;
+  width: 70px;
+  left: calc(50% - 35px);
+  top: calc(50% - 35px);
+}
+:host ::ng-deep .mat-radio-label-content {
+  font-size: 18px;
+  margin-left: 10px;
+}

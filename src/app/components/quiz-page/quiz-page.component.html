@@ -1,8 +1,13 @@
-<div class="container">
-  <div>Question: {{ currentQuestionIndex$ | async }} / {{ questionCount$ | async }}</div>
-  <div>{{ (currentQuestion$ | async) | decodeHTML }}</div>
-  <div *ngFor="let answer of currentAnswers$ | async">{{ answer | decodeHTML }}</div>
-  <button mat-raised-button (click)="previousQuestion()"
-    [disabled]="isFirstQuestion()">Previous</button>
-  <button mat-raised-button (click)="nextQuestion()">Next</button>
-</div>
+<mat-card class="container">
+  <h2 class="questions-count">Question: {{ currentQuestionIndex$ | async }} / {{ questionCount$ | async }}</h2>
+  <p class="question">{{ (currentQuestion$ | async) | decodeHTML }}</p>
+  <div class="radio-btn-container">
+    <mat-radio-button class="radio-btn" *ngFor="let answer of currentAnswers$ | async">{{ answer | decodeHTML }}
+    </mat-radio-button>
+  </div>
+  <mat-card-actions class="btn-container">
+    <button class="prev-btn btn" mat-raised-button color="warn" (click)="previousQuestion()"
+      [disabled]="isFirstQuestion()">Previous</button>
+    <button class="next-btn btn" mat-raised-button (click)="nextQuestion()">Next</button>
+  </mat-card-actions>
+</mat-card>
