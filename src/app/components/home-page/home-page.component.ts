@@ -13,7 +13,7 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  playRandomQuiz() {
+  playRandomQuiz(): void {
     this.quizService.getRandomQuiz();
   }
 

@@ -14,7 +14,7 @@ export class QuizPageComponent {
   currentQuestion$: Observable<string>;
   currentAnswers$: Observable<string[]>;
 
-  constructor(public quizService: QuizService) {
+  constructor(private quizService: QuizService) {
     this.questionCount$ = this.quizService.state$.pipe(
       map((state) => state.currentQuiz.length)
     );
@@ -29,12 +29,16 @@ export class QuizPageComponent {
     );
   }
 
-  nextQuestion() {
+  nextQuestion(): void {
     this.quizService.nextQuestion();
   }
 
-  previousQuestion() {
+  previousQuestion(): void {
     this.quizService.previousQuestion();
+  }
+
+  isFirstQuestion(): boolean {
+    return !this.quizService.getState().currentQuestionIndex;
   }
 
 }

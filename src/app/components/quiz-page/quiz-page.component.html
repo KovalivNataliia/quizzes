@@ -3,6 +3,6 @@
   <div>{{ (currentQuestion$ | async) | decodeHTML }}</div>
   <div *ngFor="let answer of currentAnswers$ | async">{{ answer | decodeHTML }}</div>
   <button mat-raised-button (click)="previousQuestion()"
-    [disabled]="quizService.getState().currentQuestionIndex === 0">Previous</button>
+    [disabled]="isFirstQuestion()">Previous</button>
   <button mat-raised-button (click)="nextQuestion()">Next</button>
 </div>

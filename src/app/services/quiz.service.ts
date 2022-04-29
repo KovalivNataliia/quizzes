@@ -11,27 +11,23 @@ import { QuizItem } from '@shared/interfaces/quizItem.interface';
 })
 export class QuizService {
 
-  randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   state$!: BehaviorSubject<QuizState>;
-  answers!: string[][];
+  private _answers!: string[][];
+  private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
 
   constructor(private http: HttpClient, private router: Router) { }
 
   getRandomQuiz(): void {
-    this.http.get(this.randomQuizUrl).pipe(
+    this.http.get(this._randomQuizUrl).pipe(
       map((response: any) => response)).subscribe(data => {
-        this.answers = this.shuffleAnswers(data.results);
+        this._answers = this._shuffleAnswers(data.results);
         this.state$ = new BehaviorSubject<QuizState>({
           currentQuiz: data.results,
-          currentAnswers: this.answers[0],
+          currentAnswers: this._answers[0],
           currentQuestionIndex: 0
         })
         this.router.navigate(['/quiz']);
       });
-  }
-
-  setState(partialState: Partial<QuizState>): void {
-    this.state$.next({ ...this.state$.getValue(), ...partialState });
   }
 
   getState(): QuizState {
@@ -42,12 +38,12 @@ export class QuizService {
     const state = this.getState();
     const canChange = state.currentQuestionIndex !== state.currentQuiz.length - 1;
     const newAnswers = canChange
-      ? this.answers[state.currentQuestionIndex + 1]
-      : this.answers[state.currentQuestionIndex];
+      ? this._answers[state.currentQuestionIndex + 1]
+      : this._answers[state.currentQuestionIndex];
     const newcurrentQuestionIndex = canChange
       ? state.currentQuestionIndex + 1
       : state.currentQuestionIndex;
-    this.setState({
+    this._setState({
       currentQuestionIndex: newcurrentQuestionIndex,
       currentAnswers: newAnswers
     });
@@ -55,15 +51,19 @@ export class QuizService {
 
   previousQuestion(): void {
     const state = this.getState();
-    const newAnswers = this.answers[state.currentQuestionIndex - 1];
+    const newAnswers = this._answers[state.currentQuestionIndex - 1];
     const newcurrentQuestionIndex = state.currentQuestionIndex - 1;
-    this.setState({
+    this._setState({
       currentQuestionIndex: newcurrentQuestionIndex,
       currentAnswers: newAnswers
     });
   }
 
-  shuffleAnswers(quizData: QuizItem[]): string[][] {
+  private _setState(partialState: Partial<QuizState>): void {
+    this.state$.next({ ...this.state$.getValue(), ...partialState });
+  }
+
+  private _shuffleAnswers(quizData: QuizItem[]): string[][] {
     const allAnswers = [];
     for (let quiz of quizData) {
       let answers = [...quiz.incorrect_answers, quiz.correct_answer];
