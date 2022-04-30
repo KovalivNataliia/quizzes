@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { QuizService } from '@services/quiz.service';
+import { DialogService } from '@services/dialog.service';
 
 @Component({
   selector: 'app-quiz-page',
@@ -13,9 +14,9 @@ export class QuizPageComponent {
   currentQuestionIndex$: Observable<number>;
   currentQuestion$: Observable<string>;
   currentAnswers$: Observable<string[]>;
-  userAnswers: {[key: string]: string} = {};
+  userAnswers: string[] = [];
 
-  constructor(private quizService: QuizService) {
+  constructor(private quizService: QuizService, private dialogService: DialogService) {
     this.questionCount$ = this.quizService.state$.pipe(
       map((state) => state.currentQuiz.length)
     );
@@ -55,6 +56,11 @@ export class QuizPageComponent {
   isAlreadyChecked(answer?: string): boolean {
     const state = this.quizService.getState();
     return this.userAnswers[state.currentQuestionIndex] === answer;
+  }
+
+  showResults(): void {
+    const quizResult = this.quizService.getQuizResult(this.userAnswers);
+    this.dialogService.openResultDialog(quizResult);
   }
 
 }

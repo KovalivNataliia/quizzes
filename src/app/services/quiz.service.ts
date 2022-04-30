@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
+import { QuizResult } from '@shared/interfaces/quizResult.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,9 @@ export class QuizService {
           currentQuiz: data.results,
           currentAnswers: this._answers[0],
           currentQuestionIndex: 0,
-          pointsPerQuestion: 100
+          pointsPerQuestion: 100,
+          quizStartTime: performance.now(),
+          quizEndTime: null,
         })
         this.router.navigate(['/quiz']);
       });
@@ -55,6 +58,15 @@ export class QuizService {
     });
   }
 
+  getQuizResult(userAnswers: string[]): QuizResult {
+    const state = this.getState();
+    state.quizEndTime = performance.now();
+    const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
+    const pointsCount = correctAnswersCount * state.pointsPerQuestion;
+    const quizTimeCount = state.quizEndTime - state.quizStartTime;
+    return {correctAnswersCount, pointsCount, quizTimeCount};
+  }
+
   private _setState(partialState: Partial<QuizState>): void {
     this.state$.next({ ...this.state$.getValue(), ...partialState });
   }
@@ -70,6 +82,16 @@ export class QuizService {
       allAnswers.push(answers);
     }
     return allAnswers
+  }
+
+  private _countCorrectAnswers(userAnswers: string[], currentQuiz: QuizItem[]): number {
+    let correctAnswersCount = 0;
+    for (let i = 0; i < userAnswers.length; i++) {
+      if (userAnswers[i] === currentQuiz[i].correct_answer) {
+        correctAnswersCount++
+      }
+    }
+    return correctAnswersCount
   }
 
 }

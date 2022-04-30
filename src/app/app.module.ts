@@ -8,6 +8,8 @@ import { HomePageModule } from '@modules/home-page.module';
 import { QuizPageModule } from '@modules/quiz-page.module';
 import { QuizService } from '@services/quiz.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DialogModule } from '@modules/dialog.module';
+import { DialogService } from '@services/dialog.service';
 
 
 @NgModule({
@@ -20,9 +22,13 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     HttpClientModule,
     HomePageModule,
-    QuizPageModule
+    QuizPageModule,
+    DialogModule
   ],
-  providers: [QuizService],
+  providers: [
+    QuizService,
+    DialogService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

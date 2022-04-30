@@ -4,5 +4,7 @@ export interface QuizState {
   currentQuiz: QuizItem[],
   currentAnswers: string[],
   currentQuestionIndex: number,
-  pointsPerQuestion: number
+  pointsPerQuestion: number,
+  quizStartTime: number,
+  quizEndTime: number | null
 }
