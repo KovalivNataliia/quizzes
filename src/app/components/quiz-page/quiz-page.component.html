@@ -1,4 +1,7 @@
 <mat-card class="container">
+  <button class="leave-btn" mat-raised-button color="warn" routerLink="/home">
+    Leave quiz
+  </button>
   <h2 class="questions-count">
     Question: {{ currentQuestionIndex$ | async }} / {{ questionCount$ | async }}
   </h2>
@@ -18,7 +21,7 @@
       [disabled]="isAlreadyChecked()">
       Next
     </button>
-    <button *ngIf="isLastQuestion()" class="next-btn btn" mat-raised-button color="primary" (click)="showResults()"
+    <button *ngIf="isLastQuestion()" class="result-btn btn" mat-raised-button color="primary" (click)="showResults()"
       [disabled]="isAlreadyChecked()">
       Show results
     </button>

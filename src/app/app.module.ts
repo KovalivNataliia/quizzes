@@ -10,6 +10,7 @@ import { QuizService } from '@services/quiz.service';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from '@modules/dialog.module';
 import { DialogService } from '@services/dialog.service';
+import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { DialogService } from '@services/dialog.service';
   ],
   providers: [
     QuizService,
-    DialogService
+    DialogService,
+    LeaveQuizGuard
   ],
   bootstrap: [AppComponent]
 })

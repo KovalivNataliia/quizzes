@@ -6,5 +6,6 @@ export interface QuizState {
   currentQuestionIndex: number,
   pointsPerQuestion: number,
   quizStartTime: number,
-  quizEndTime: number | null
+  quizEndTime: number | null,
+  isQuizDataSaved: boolean
 }

@@ -29,6 +29,7 @@ export class QuizService {
           pointsPerQuestion: 100,
           quizStartTime: performance.now(),
           quizEndTime: null,
+          isQuizDataSaved: false
         })
         this.router.navigate(['/quiz']);
       });
@@ -64,6 +65,9 @@ export class QuizService {
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
+    this._setState({
+      isQuizDataSaved: true
+    });
     return {correctAnswersCount, pointsCount, quizTimeCount};
   }
 
