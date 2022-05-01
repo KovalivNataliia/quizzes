@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QuizService } from '@services/quiz.service';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
 
@@ -14,7 +14,6 @@ export class ResultDialogComponent {
   questionCount$: Observable<number>;
 
   constructor(
-    public dialogRef: MatDialogRef<ResultDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: QuizResult,
     private quizService: QuizService
   ) { 

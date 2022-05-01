@@ -13,7 +13,7 @@ export class DialogService {
 
   openResultDialog(quizResult: QuizResult): void {
     const dialogRef = this.dialog.open(ResultDialogComponent, {
-      width: '400px',
+      width: '500px',
       data: quizResult
     });
 
