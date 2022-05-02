@@ -1,3 +1,8 @@
 <div class="container">
-  <button mat-raised-button color="accent" class="btn" (click)="playRandomQuiz()">I'm lucky</button>
+  <ng-container *ngIf="!showSpinner; else spinner">
+    <button mat-raised-button color="accent" class="btn" (click)="playRandomQuiz()">I'm lucky</button>
+  </ng-container>
+  <ng-template #spinner>
+    <mat-spinner [diameter]="250"></mat-spinner>
+  </ng-template>
 </div>

@@ -8,12 +8,15 @@ import { QuizService } from '@services/quiz.service';
 })
 export class HomePageComponent implements OnInit {
 
+  showSpinner: boolean = false;
+
   constructor(private quizService: QuizService) { }
 
   ngOnInit(): void {
   }
 
   playRandomQuiz(): void {
+    this.showSpinner = true;
     this.quizService.getRandomQuiz();
   }
 

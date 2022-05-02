@@ -1,9 +1,11 @@
 .container {
-  text-align: center;
   .btn {
     width: 200px;
     height: 60px;
     font-size: 18px;
     letter-spacing: 2px;
+  }
+  .mat-progress-spinner {
+    margin-top: 10%;
   }
 }
