@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class convertMillisecondsPipe implements PipeTransform {
 
-  transform(milliseconds: number, ...args: unknown[]): unknown {
-    const padToTwoDigits = (number: number) => {
+  transform(milliseconds: number): string {
+    const padToTwoDigits = (number: number): string => {
       return number.toString().padStart(2, '0');
     }
     let seconds = Math.floor(milliseconds / 1000);
