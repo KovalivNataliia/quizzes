@@ -14,7 +14,6 @@ export class QuizPageComponent {
   currentQuestionIndex$: Observable<number>;
   currentQuestion$: Observable<string>;
   currentAnswers$: Observable<string[]>;
-  isQuizDataSaved!: boolean;
   userAnswers: string[] = [];
 
   constructor(private quizService: QuizService, private dialogService: DialogService) {
@@ -66,8 +65,7 @@ export class QuizPageComponent {
 
   canDeactivate(): Observable<boolean> | boolean {
     const state = this.quizService.getState();
-    this.isQuizDataSaved = state.isQuizDataSaved;
-    if (!this.isQuizDataSaved) {
+    if (!state.isQuizDataSaved) {
       return this.dialogService.openLeaveQuizDialog();
     }
     return true;
