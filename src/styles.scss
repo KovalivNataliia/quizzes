@@ -10,3 +10,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   justify-content: center;
   text-align: center;
 }
+
+.quiz-radio-btn-container {
+  .mat-radio-container {
+    height: 35px;
+    width: 35px;
+    .mat-radio-outer-circle {
+      height: 35px;
+      width: 35px;
+    }
+    .mat-radio-inner-circle {
+      height: 35px;
+      width: 35px;
+    }
+  }
+  .mat-radio-button .mat-radio-ripple {
+    height: 70px;
+    width: 70px;
+    left: calc(50% - 35px);
+    top: calc(50% - 35px);
+  }
+  .mat-radio-label-content {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+}
