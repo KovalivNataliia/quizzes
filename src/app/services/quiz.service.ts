@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
-import { QuizData } from '@shared/interfaces/quizData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +17,8 @@ export class QuizService {
 
   constructor(private http: HttpClient) { }
 
-  getRandomQuiz(): Observable<QuizData> {
-    return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response));
+  getRandomQuiz(): Observable<QuizItem[]> {
+    return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));
   }
 
   getState(): QuizState {

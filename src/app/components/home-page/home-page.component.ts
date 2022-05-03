@@ -18,8 +18,7 @@ export class HomePageComponent implements OnInit {
 
   playRandomQuiz(): void {
     this.showSpinner = true;
-    this.quizService.getRandomQuiz().subscribe(data => {
-      const quiz = data.results;
+    this.quizService.getRandomQuiz().subscribe(quiz => {
       this.quizService.answers = this.quizService.shuffleAnswers(quiz);
       const stateData = {
         currentQuiz: quiz,
