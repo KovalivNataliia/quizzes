@@ -1,11 +1,11 @@
-.close-btn {
+.result-dialog-close-btn {
   float: right;
   top:-24px;
   right:-24px;
-  .close-icon {
+  .result-dialog-close-icon {
     transition: 1s ease-in-out;
   }
-  .close-icon:hover {
+  .result-dialog-close-icon:hover {
     transform: rotate(180deg);
   }
 }
@@ -14,11 +14,11 @@
   padding: 35px;
 }
 
-.content {
+.result-dialog-content {
   text-align: center;
   margin: 0;
   overflow: unset;
-  .title {
+  .result-dialog-title {
     font-size: 30px;
     margin-bottom: 40px;
   }

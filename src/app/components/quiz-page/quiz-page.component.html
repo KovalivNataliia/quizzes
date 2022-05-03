@@ -1,28 +1,28 @@
-<mat-card class="question-card">
-  <button class="leave-btn" mat-raised-button color="warn" routerLink="/home">
+<mat-card class="quiz-question-card container">
+  <button class="quiz-leave-btn" mat-raised-button color="warn" routerLink="/home">
     Leave quiz
   </button>
-  <h2 class="questions-count">
+  <h2 class="quiz-questions-count">
     Question: {{ currentQuestionIndex$ | async }} / {{ questionCount$ | async }}
   </h2>
-  <p class="question">{{ (currentQuestion$ | async) | decodeHTML }}</p>
-  <div class="radio-btn-container">
-    <mat-radio-button class="radio-btn" *ngFor="let answer of currentAnswers$ | async" (change)="setAnswer(answer)"
+  <p class="quiz-question">{{ (currentQuestion$ | async) | decodeHTML }}</p>
+  <div class="quiz-radio-btn-container">
+    <mat-radio-button class="quiz-radio-btn" *ngFor="let answer of currentAnswers$ | async" (change)="setAnswer(answer)"
       [checked]="isAlreadyChecked(answer)">
       {{ answer | decodeHTML }}
     </mat-radio-button>
   </div>
-  <mat-card-actions class="btn-container">
-    <button class="prev-btn btn" mat-raised-button color="warn" (click)="previousQuestion()"
+  <mat-card-actions class="quiz-btn-container">
+    <button class="quiz-prev-btn quiz-btn" mat-raised-button color="warn" (click)="previousQuestion()"
       [disabled]="isFirstQuestion()">
       Previous
     </button>
-    <button *ngIf="!isLastQuestion()" class="next-btn btn" mat-raised-button (click)="nextQuestion()"
+    <button *ngIf="!isLastQuestion()" class="quiz-next-btn quiz-btn" mat-raised-button (click)="nextQuestion()"
       [disabled]="isAlreadyChecked()">
       Next
     </button>
-    <button *ngIf="isLastQuestion()" class="result-btn btn" mat-raised-button color="primary" (click)="showResults()"
-      [disabled]="isAlreadyChecked()">
+    <button *ngIf="isLastQuestion()" class="quiz-result-btn quiz-btn" mat-raised-button color="primary"
+      (click)="showResults()" [disabled]="isAlreadyChecked()">
       Show results
     </button>
   </mat-card-actions>

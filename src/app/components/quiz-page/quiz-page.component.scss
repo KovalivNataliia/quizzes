@@ -1,18 +1,16 @@
-.question-card {
-  max-width: 1200px;
+.quiz-question-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 60px auto;
-  .leave-btn {
+  .quiz-leave-btn {
     position: relative;
     left: 45%;
   }
-  .questions-count {
+  .quiz-questions-count {
     font-size: 35px;
     margin: 0;
   }
-  .question {
+  .quiz-question {
     display: flex;
     align-items: center;
     height: 75px;
@@ -21,16 +19,16 @@
     line-height: 1.5;
     text-align: center;
   }
-  .radio-btn-container {
+  .quiz-radio-btn-container {
     height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     row-gap: 25px;
   }
-  .btn-container {
+  .quiz-btn-container {
     margin: 30px 0;
-    .btn {
+    .quiz-btn {
       width: 150px;
       height: 40px;
     }
