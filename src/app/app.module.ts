@@ -5,6 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderModule } from '@modules/header.module';
+import { HomePageModule } from '@modules/home-page.module';
+import { QuizPageModule } from '@modules/quiz-page.module';
+import { QuizService } from '@services/quiz.service';
+import { HttpClientModule } from '@angular/common/http';
+import { DialogModule } from '@modules/dialog.module';
+import { DialogService } from '@services/dialog.service';
+import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 
 @NgModule({
   declarations: [
@@ -14,9 +21,17 @@ import { HeaderModule } from '@modules/header.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HeaderModule
+    HttpClientModule,
+    HeaderModule,
+    HomePageModule,
+    QuizPageModule,
+    DialogModule
   ],
-  providers: [],
+  providers: [
+    QuizService,
+    DialogService,
+    LeaveQuizGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

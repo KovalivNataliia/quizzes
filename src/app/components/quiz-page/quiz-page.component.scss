@@ -1,0 +1,36 @@
+.quiz-question-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .quiz-leave-btn {
+    position: relative;
+    left: 45%;
+  }
+  .quiz-questions-count {
+    font-size: 35px;
+    margin: 0;
+  }
+  .quiz-question {
+    display: flex;
+    align-items: center;
+    height: 75px;
+    font-size: 25px;
+    margin: 20px 80px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .quiz-radio-btn-container {
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 25px;
+  }
+  .quiz-btn-container {
+    margin: 30px 0;
+    .quiz-btn {
+      width: 150px;
+      height: 40px;
+    }
+  }
+}

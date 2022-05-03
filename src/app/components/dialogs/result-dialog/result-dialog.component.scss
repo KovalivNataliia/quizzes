@@ -1,0 +1,29 @@
+.result-dialog-close-btn {
+  float: right;
+  top:-24px;
+  right:-24px;
+  .result-dialog-close-icon {
+    transition: 1s ease-in-out;
+  }
+  .result-dialog-close-icon:hover {
+    transform: rotate(180deg);
+  }
+}
+
+::ng-deep .mat-dialog-container {
+  padding: 35px;
+}
+
+.result-dialog-content {
+  text-align: center;
+  margin: 0;
+  overflow: unset;
+  .result-dialog-title {
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+  p {
+    font-size: 25px;
+    margin-bottom: 35px;
+  }
+}
