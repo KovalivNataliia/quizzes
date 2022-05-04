@@ -20,7 +20,7 @@ export class QuizService {
 
   constructor(private http: HttpClient) { }
 
-  getQuizzes() {
+  getQuizzes(): QuizData[] {
     return this.quizzes;
   }
 
