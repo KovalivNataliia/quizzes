@@ -15,13 +15,13 @@ export class QuizService {
 
   state$!: BehaviorSubject<QuizState>;
   answers!: string[][];
-  quizzes: QuizData[] = QUIZZES;
+  private _quizzes: QuizData[] = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
 
   constructor(private http: HttpClient) { }
 
   getQuizzes(): QuizData[] {
-    return this.quizzes;
+    return this._quizzes;
   }
 
   getRandomQuiz(): Observable<QuizItem[]> {
@@ -97,7 +97,7 @@ export class QuizService {
   }
 
   private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    const currentQuiz = this.quizzes.filter(quizData => quizData.quiz === quiz)[0];
+    const currentQuiz = this._quizzes.filter(quizData => quizData.quiz === quiz)[0];
     if (currentQuiz) {
       currentQuiz.timesPlayed++
     }
