@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 
 @Component({
@@ -9,5 +9,9 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 export class QuizCardComponent {
 
   @Input() quizData!: QuizData;
+  @Output() emitPlayQuiz: EventEmitter<QuizData> = new EventEmitter();
 
+  playQuiz(quizData: QuizData): void {
+    this.emitPlayQuiz.emit(quizData);
+  }
 }

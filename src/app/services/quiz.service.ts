@@ -62,6 +62,7 @@ export class QuizService {
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
+    this._changeTimesPlayedData(state.currentQuiz);
     this._setPartialState({
       isQuizDataSaved: true
     });
@@ -93,6 +94,13 @@ export class QuizService {
       }
     }
     return correctAnswersCount
+  }
+
+  private _changeTimesPlayedData(quiz: QuizItem[]): void {
+    const currentQuiz = QUIZZES.filter(quizData => quizData.quiz === quiz)[0];
+    if (currentQuiz) {
+      currentQuiz.timesPlayed++
+    }
   }
 
 }
