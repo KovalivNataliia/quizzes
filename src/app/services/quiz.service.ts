@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
+import { QuizData } from '@shared/interfaces/quizData.interface';
+import { QUIZZES } from '@shared/quizzes-data';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +15,14 @@ export class QuizService {
 
   state$!: BehaviorSubject<QuizState>;
   answers!: string[][];
+  quizzes: QuizData[] = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
 
   constructor(private http: HttpClient) { }
+
+  getQuizzes() {
+    return this.quizzes;
+  }
 
   getRandomQuiz(): Observable<QuizItem[]> {
     return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));

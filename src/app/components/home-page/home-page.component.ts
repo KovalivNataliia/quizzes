@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizService } from '@services/quiz.service';
+import { QuizData } from '@shared/interfaces/quizData.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -10,10 +11,12 @@ import { QuizService } from '@services/quiz.service';
 export class HomePageComponent implements OnInit {
 
   showSpinner: boolean = false;
+  quizzes!: QuizData[];
 
   constructor(private quizService: QuizService, private router: Router) { }
 
   ngOnInit(): void {
+    this.quizzes = this.quizService.getQuizzes();
   }
 
   playRandomQuiz(): void {
