@@ -97,7 +97,7 @@ export class QuizService {
   }
 
   private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    const currentQuiz = QUIZZES.filter(quizData => quizData.quiz === quiz)[0];
+    const currentQuiz = this.quizzes.filter(quizData => quizData.quiz === quiz)[0];
     if (currentQuiz) {
       currentQuiz.timesPlayed++
     }
