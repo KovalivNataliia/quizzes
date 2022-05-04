@@ -10,8 +10,10 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 })
 export class HomePageComponent {
 
-  showSpinner: boolean = false;
   quizzes: QuizData[] = this.quizService.getQuizzes();
+  showSpinner: boolean = false;
+  noResults: boolean = false;
+  searchMode: boolean = false;
 
   constructor(private quizService: QuizService, private router: Router) { }
 
@@ -48,6 +50,17 @@ export class HomePageComponent {
     }
     this.quizService.setState(stateData);
     this.router.navigate(['/quiz']);
+  }
+
+  searchByQuizName(event$: {text: string}): void {
+    this.searchMode = true;
+    this.quizzes = this.quizService.searchQuiz(event$.text);
+    this.noResults = !this.quizzes.length;
+  }
+
+  goBack(): void {
+    this.searchMode = false;
+    this.quizzes = this.quizService.getQuizzes();
   }
 
 }

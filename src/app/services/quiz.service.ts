@@ -82,6 +82,14 @@ export class QuizService {
     return allAnswers
   }
 
+  searchQuiz(text: string): QuizData[] {
+    const filteredQuizzes = this._quizzes.filter(quizData => {
+      text = text.toLocaleLowerCase();
+      return quizData.quizName.toLocaleLowerCase().includes(text);
+    });
+    return filteredQuizzes;
+  }
+
   private _setPartialState(partialState: Partial<QuizState>): void {
     this.state$.next({ ...this.state$.getValue(), ...partialState });
   }
