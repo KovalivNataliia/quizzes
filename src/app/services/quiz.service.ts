@@ -66,7 +66,7 @@ export class QuizService {
     this._setPartialState({
       isQuizDataSaved: true
     });
-    return {correctAnswersCount, pointsCount, quizTimeCount};
+    return { correctAnswersCount, pointsCount, quizTimeCount };
   }
 
   shuffleAnswers(quizData: QuizItem[]): string[][] {
@@ -88,6 +88,22 @@ export class QuizService {
       return quizData.quizName.toLocaleLowerCase().includes(text);
     });
     return filteredQuizzes;
+  }
+
+  sortQuizzes(selectedValue: string): QuizData[] {
+    const quizzes = [...this._quizzes];
+    switch (selectedValue) {
+      case 'name':
+        return quizzes.sort((a, b) => b.quizName > a.quizName ? -1 : 1);
+      case 'points':
+        return quizzes.sort((a, b) => b.pointsPerQuestion - a.pointsPerQuestion);
+      case 'questions':
+        return quizzes.sort((a, b) => b.quiz.length - a.quiz.length);
+      case 'playedTimes':
+        return quizzes.sort((a, b) => b.timesPlayed - a.timesPlayed);
+      default:
+        return this._quizzes
+    }
   }
 
   private _setPartialState(partialState: Partial<QuizState>): void {

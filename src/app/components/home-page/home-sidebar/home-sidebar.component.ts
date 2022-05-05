@@ -8,11 +8,19 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class HomeSidebarComponent {
 
   @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
+  @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
   text: string = '';
+  selectedValue: string = '';
 
-  searchByQuizName(text: string): void {
+  searchByQuizName(): void {
+    const emitData = {text: this.text};
+    this.emitSearchByQuizName.emit(emitData);
     this.text = '';
-    this.emitSearchByQuizName.emit({text});
+  }
+
+  sortQuizzes(): void {
+    const emitData = {selectedValue: this.selectedValue};
+    this.emitSortQuizzes.emit(emitData);
   }
 
 }

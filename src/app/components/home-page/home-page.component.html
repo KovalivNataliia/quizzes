@@ -1,6 +1,7 @@
 <div class="container">
   <ng-container *ngIf="!showSpinner; else spinner">
-    <app-home-sidebar class="home-sidebar" (emitSearchByQuizName)="searchByQuizName($event)"></app-home-sidebar>
+    <app-home-sidebar class="home-sidebar" (emitSearchByQuizName)="searchByQuizName($event)"
+      (emitSortQuizzes)="sortQuizzes($event)"></app-home-sidebar>
     <div class="home-content">
       <button mat-raised-button color="accent" class="home-play-btn" (click)="playRandomQuiz()">I'm lucky</button>
       <div class="home-quizzes-container">

@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { HomePageComponent } from '@components/home-page/home-page.component';
 import { QuizCardComponent } from '@components/home-page/quiz-card/quiz-card.component';
 import { HomeSidebarComponent } from '@components/home-page/home-sidebar/home-sidebar.component';
@@ -23,7 +24,8 @@ import { HomeSidebarComponent } from '@components/home-page/home-sidebar/home-si
     MatProgressSpinnerModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   exports: [HomePageComponent]
 })

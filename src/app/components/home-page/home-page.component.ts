@@ -58,6 +58,10 @@ export class HomePageComponent {
     this.noResults = !this.quizzes.length;
   }
 
+  sortQuizzes(event$: {selectedValue: string}) {
+    this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
+  }
+
   goBack(): void {
     this.searchMode = false;
     this.quizzes = this.quizService.getQuizzes();
