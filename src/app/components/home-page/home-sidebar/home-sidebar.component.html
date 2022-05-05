@@ -4,7 +4,7 @@
       <mat-label>Search by quiz name</mat-label>
       <input matInput name="text" [(ngModel)]="text">
     </mat-form-field>
-    <button class="sidebar-search-btn" mat-stroked-button color="warn" (click)="searchByQuizName()"
+    <button class="sidebar-search-btn sidebar-btn" mat-stroked-button color="warn" (click)="searchByQuizName()"
       [disabled]="!text">
       Search
     </button>
@@ -19,4 +19,12 @@
       <mat-option value="playedTimes">Played times</mat-option>
     </mat-select>
   </mat-form-field>
+  <div class="sidebar-btn-container">
+    <button class="sidebar-create-btn sidebar-btn" mat-stroked-button color="accent">
+      Create quiz
+    </button>
+    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary">
+      See statistic
+    </button>
+  </div>
 </mat-card>

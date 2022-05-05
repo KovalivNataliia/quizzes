@@ -1,5 +1,10 @@
 .sidebar-container {
-  min-height: 400px;
+  .sidebar-btn {
+    width: 200px;
+    height: 52.5px;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
   .sidebar-search-form {
     display: flex;
     justify-content: center;
@@ -11,12 +16,14 @@
     }
     .sidebar-search-btn {
       width: 150px;
-      height: 52.5px;
-      margin-bottom: 16px;
-      font-size: 16px;
     }
   }
   .sidebar-sort-field {
     width: 100%;
+  }
+  .sidebar-btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
