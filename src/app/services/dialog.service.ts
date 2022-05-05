@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LeaveQuizDialogComponent } from '@components/dialogs/leave-quiz-dialog/leave-quiz-dialog.component';
 import { ResultDialogComponent } from '@components/dialogs/result-dialog/result-dialog.component';
+import { CreateQuizDialogComponent } from '@components/dialogs/create-quiz-dialog/create-quiz-dialog.component';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
 
 @Injectable({
@@ -27,6 +28,12 @@ export class DialogService {
       width: '350px'
     });
     return dialogRef.afterClosed();
+  }
+
+  openCreateQuizDialog(): void {
+    this.dialog.open(CreateQuizDialogComponent, {
+      width: '500px'
+    });
   }
 
 }

@@ -6,6 +6,7 @@ import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
 import { QuizData } from '@shared/interfaces/quizData.interface';
+import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 import { QUIZZES } from '@shared/quizzes-data';
 
 @Injectable({
@@ -17,6 +18,8 @@ export class QuizService {
   public answers!: string[][];
   private _quizzes = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
+  private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
+  private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +33,14 @@ export class QuizService {
 
   public getState(): QuizState {
     return this.state$.getValue();
+  }
+
+  getQuizCategories(): Observable<QuizCategory[]> {
+    return this.http.get(this._quizCategoriesUrl).pipe(map((response: any) => response.trivia_categories));
+  }
+
+  getQuestionCount(id: string): Observable<{[key: string]: number}> {
+    return this.http.get(this._questionCountUrl + id).pipe(map((response: any) => response.category_question_count));
   }
 
   public setState(stateData: QuizState): void {
