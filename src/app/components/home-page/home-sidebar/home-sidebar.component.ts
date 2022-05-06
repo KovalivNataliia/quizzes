@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { DialogService } from '@services/dialog.service';
+import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 
 @Component({
   selector: 'app-home-sidebar',
@@ -10,16 +11,13 @@ export class HomeSidebarComponent {
 
   @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
   @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
+  @Output() emitCreateQuiz: EventEmitter<CreateQuizData> = new EventEmitter();
   public text: string = '';
   public selectedValue: string = '';
 
-<<<<<<< HEAD
-  public searchByQuizName(): void {
-=======
   constructor(private dialogService: DialogService) {}
 
-  searchByQuizName(): void {
->>>>>>> 6f19f8c (feat: implement create-quiz dialog)
+  public searchByQuizName(): void {
     const emitData = {text: this.text};
     this.emitSearchByQuizName.emit(emitData);
     this.text = '';
@@ -31,7 +29,9 @@ export class HomeSidebarComponent {
   }
 
   createQuiz(): void {
-    this.dialogService.openCreateQuizDialog();
+    this.dialogService.openCreateQuizDialog().subscribe(result => {
+      this.emitCreateQuiz.emit(result);
+    });;
   }
 
 }

@@ -2,7 +2,7 @@
   <div class="sidebar-search-form">
     <mat-form-field appearance="fill" class="sidebar-search-field">
       <mat-label>Search by quiz name</mat-label>
-      <input matInput name="text" [(ngModel)]="text">
+      <input matInput name="text" [(ngModel)]="text" autocomplete="off">
     </mat-form-field>
     <button class="sidebar-search-btn sidebar-btn" mat-stroked-button color="warn" (click)="searchByQuizName()"
       [disabled]="!text">

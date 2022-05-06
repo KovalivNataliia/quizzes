@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizService } from '@services/quiz.service';
 import { QuizData } from '@shared/interfaces/quizData.interface';
+import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -60,6 +61,25 @@ export class HomePageComponent {
 
   public sortQuizzes(event$: {selectedValue: string}) {
     this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
+  }
+
+  createQuiz(event$: CreateQuizData) {
+    if (event$) {
+      const { pointsPerQuestion } = event$;
+      this.quizService.getQuiz(event$).subscribe(quiz => {
+        const lastQuiz = this.quizzes[this.quizzes.length - 1];
+        const quizData = {
+          id: lastQuiz.id + 1,
+          quizName: quiz[0].category,
+          pointsPerQuestion: +pointsPerQuestion,
+          timesPlayed: 0,
+          createdByUser: true,
+          quiz
+        }
+        this.quizzes = [...this.quizzes, quizData];
+        this.quizService.quizzes = this.quizzes;
+      })
+    }
   }
 
   public goBack(): void {

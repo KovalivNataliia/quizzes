@@ -13,7 +13,7 @@ export class CreateQuizDialogComponent {
   quizCategories!: QuizCategory[];
   categoryId!: string;
   quizDifficulty!: string;
-  quizPoints!: string;
+  pointsPerQuestion!: string;
   questionCount!: number;
   maxQuestionCount!: number;
 
@@ -33,7 +33,7 @@ export class CreateQuizDialogComponent {
   getQuestionCount(): void {
     this.quizService.getQuestionCount(this.categoryId).subscribe(questionCount => {
       const key = `total_${this.quizDifficulty}_question_count`;
-      this.maxQuestionCount = questionCount[key];
+      this.maxQuestionCount = questionCount[key] > 50 ? 50 : questionCount[key];
     })
   }
 

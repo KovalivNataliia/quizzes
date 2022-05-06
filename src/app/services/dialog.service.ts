@@ -6,6 +6,7 @@ import { LeaveQuizDialogComponent } from '@components/dialogs/leave-quiz-dialog/
 import { ResultDialogComponent } from '@components/dialogs/result-dialog/result-dialog.component';
 import { CreateQuizDialogComponent } from '@components/dialogs/create-quiz-dialog/create-quiz-dialog.component';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
+import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,11 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  openCreateQuizDialog(): void {
-    this.dialog.open(CreateQuizDialogComponent, {
+  openCreateQuizDialog(): Observable<CreateQuizData> {
+    const dialogRef = this.dialog.open(CreateQuizDialogComponent, {
       width: '500px'
     });
+    return dialogRef.afterClosed()
   }
 
 }

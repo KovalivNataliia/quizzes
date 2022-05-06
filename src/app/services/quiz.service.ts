@@ -8,6 +8,7 @@ import { QuizResult } from '@shared/interfaces/quizResult.interface';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 import { QUIZZES } from '@shared/quizzes-data';
+import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class QuizService {
 
   public state$!: BehaviorSubject<QuizState>;
   public answers!: string[][];
-  private _quizzes = QUIZZES;
+  public quizzes = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
@@ -24,7 +25,7 @@ export class QuizService {
   constructor(private http: HttpClient) { }
 
   public getQuizzes(): QuizData[] {
-    return this._quizzes;
+    return this.quizzes;
   }
 
   public getRandomQuiz(): Observable<QuizItem[]> {
@@ -35,11 +36,17 @@ export class QuizService {
     return this.state$.getValue();
   }
 
+  getQuiz(quizRequestData: CreateQuizData): Observable<QuizItem[]> {
+    const { questionCount, categoryId, quizDifficulty } = quizRequestData;
+    const url = `https://opentdb.com/api.php?amount=${questionCount}&category=${categoryId}&difficulty=${quizDifficulty}`;
+    return this.http.get(url).pipe(map((response: any) => response.results));
+  }
+
   getQuizCategories(): Observable<QuizCategory[]> {
     return this.http.get(this._quizCategoriesUrl).pipe(map((response: any) => response.trivia_categories));
   }
 
-  getQuestionCount(id: string): Observable<{[key: string]: number}> {
+  getQuestionCount(id: string): Observable<{ [key: string]: number }> {
     return this.http.get(this._questionCountUrl + id).pipe(map((response: any) => response.category_question_count));
   }
 
@@ -94,7 +101,7 @@ export class QuizService {
   }
 
   public searchQuiz(text: string): QuizData[] {
-    const filteredQuizzes = this._quizzes.filter(quizData => {
+    const filteredQuizzes = this.quizzes.filter(quizData => {
       text = text.toLocaleLowerCase();
       return quizData.quizName.toLocaleLowerCase().includes(text);
     });
@@ -102,7 +109,7 @@ export class QuizService {
   }
 
   public sortQuizzes(selectedValue: string): QuizData[] {
-    const quizzes = [...this._quizzes];
+    const quizzes = [...this.quizzes];
     switch (selectedValue) {
       case 'name':
         return quizzes.sort((a, b) => b.quizName > a.quizName ? -1 : 1);
@@ -113,7 +120,7 @@ export class QuizService {
       case 'playedTimes':
         return quizzes.sort((a, b) => b.timesPlayed - a.timesPlayed);
       default:
-        return this._quizzes
+        return this.quizzes
     }
   }
 
@@ -132,7 +139,7 @@ export class QuizService {
   }
 
   private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    this._quizzes.map(quizData => {
+    this.quizzes.map(quizData => {
       if (quizData.quiz.every(el => quiz.includes(el))) {
         quizData.timesPlayed++
       }
