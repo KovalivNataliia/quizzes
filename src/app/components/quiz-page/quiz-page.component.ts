@@ -10,11 +10,11 @@ import { DialogService } from '@services/dialog.service';
 })
 export class QuizPageComponent {
 
-  questionCount$: Observable<number>;
-  currentQuestionIndex$: Observable<number>;
-  currentQuestion$: Observable<string>;
-  currentAnswers$: Observable<string[]>;
-  userAnswers: string[] = [];
+  public questionCount$: Observable<number>;
+  public currentQuestionIndex$: Observable<number>;
+  public currentQuestion$: Observable<string>;
+  public currentAnswers$: Observable<string[]>;
+  public userAnswers: string[] = [];
 
   constructor(private quizService: QuizService, private dialogService: DialogService) {
     this.questionCount$ = this.quizService.state$.pipe(
@@ -31,39 +31,39 @@ export class QuizPageComponent {
     );
   }
 
-  nextQuestion(): void {
+  public nextQuestion(): void {
     this.quizService.nextQuestion();
   }
 
-  previousQuestion(): void {
+  public previousQuestion(): void {
     this.quizService.previousQuestion();
   }
 
-  setAnswer(answer: string): void {
+  public setAnswer(answer: string): void {
     const state = this.quizService.getState();
     this.userAnswers[state.currentQuestionIndex] = answer;
   }
 
-  isFirstQuestion(): boolean {
+  public isFirstQuestion(): boolean {
     return !this.quizService.getState().currentQuestionIndex;
   }
 
-  isLastQuestion(): boolean {
+  public isLastQuestion(): boolean {
     const state = this.quizService.getState();
     return state.currentQuestionIndex === state.currentQuiz.length - 1;
   }
 
-  isAlreadyChecked(answer?: string): boolean {
+  public isAlreadyChecked(answer?: string): boolean {
     const state = this.quizService.getState();
     return this.userAnswers[state.currentQuestionIndex] === answer;
   }
 
-  showResults(): void {
+  public showResults(): void {
     const quizResult = this.quizService.getQuizResult(this.userAnswers);
     this.dialogService.openResultDialog(quizResult);
   }
 
-  canDeactivate(): Observable<boolean> | boolean {
+  public canDeactivate(): Observable<boolean> | boolean {
     const state = this.quizService.getState();
     if (!state.isQuizDataSaved) {
       return this.dialogService.openLeaveQuizDialog();

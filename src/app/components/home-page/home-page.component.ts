@@ -10,14 +10,14 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 })
 export class HomePageComponent {
 
-  quizzes: QuizData[] = this.quizService.getQuizzes();
-  showSpinner: boolean = false;
-  noResults: boolean = false;
-  searchMode: boolean = false;
+  public quizzes = this.quizService.getQuizzes();
+  public showSpinner = false;
+  public noResults = false;
+  public searchMode = false;
 
   constructor(private quizService: QuizService, private router: Router) { }
 
-  playRandomQuiz(): void {
+  public playRandomQuiz(): void {
     this.showSpinner = true;
     this.quizService.getRandomQuiz().subscribe(quiz => {
       this.quizService.answers = this.quizService.shuffleAnswers(quiz);
@@ -35,7 +35,7 @@ export class HomePageComponent {
     });
   }
 
-  playQuiz(quizData: QuizData): void {
+  public playQuiz(quizData: QuizData): void {
     this.showSpinner = true;
     const quiz = quizData.quiz;
     this.quizService.answers = this.quizService.shuffleAnswers(quiz);
@@ -52,17 +52,17 @@ export class HomePageComponent {
     this.router.navigate(['/quiz']);
   }
 
-  searchByQuizName(event$: {text: string}): void {
+  public searchByQuizName(event$: {text: string}): void {
     this.searchMode = true;
     this.quizzes = this.quizService.searchQuiz(event$.text);
     this.noResults = !this.quizzes.length;
   }
 
-  sortQuizzes(event$: {selectedValue: string}) {
+  public sortQuizzes(event$: {selectedValue: string}) {
     this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
   }
 
-  goBack(): void {
+  public goBack(): void {
     this.searchMode = false;
     this.quizzes = this.quizService.getQuizzes();
   }

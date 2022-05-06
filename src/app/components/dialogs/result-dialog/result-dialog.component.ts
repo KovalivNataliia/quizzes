@@ -11,7 +11,7 @@ import { QuizResult } from '@shared/interfaces/quizResult.interface';
 })
 export class ResultDialogComponent {
 
-  questionCount$: Observable<number>;
+  public questionCount$: Observable<number>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: QuizResult,

@@ -13,7 +13,7 @@ export class DialogService {
 
   constructor(public dialog: MatDialog, private router: Router) { }
 
-  openResultDialog(quizResult: QuizResult): void {
+  public openResultDialog(quizResult: QuizResult): void {
     const dialogRef = this.dialog.open(ResultDialogComponent, {
       width: '500px',
       data: quizResult
@@ -22,7 +22,7 @@ export class DialogService {
     dialogRef.afterClosed().subscribe(() => this.router.navigate(['/home']));
   }
 
-  openLeaveQuizDialog(): Observable<boolean> {
+  public openLeaveQuizDialog(): Observable<boolean> {
     const dialogRef = this.dialog.open(LeaveQuizDialogComponent, {
       width: '350px'
     });

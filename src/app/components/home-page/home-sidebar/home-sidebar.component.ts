@@ -9,16 +9,16 @@ export class HomeSidebarComponent {
 
   @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
   @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
-  text: string = '';
-  selectedValue: string = '';
+  public text: string = '';
+  public selectedValue: string = '';
 
-  searchByQuizName(): void {
+  public searchByQuizName(): void {
     const emitData = {text: this.text};
     this.emitSearchByQuizName.emit(emitData);
     this.text = '';
   }
 
-  sortQuizzes(): void {
+  public sortQuizzes(): void {
     const emitData = {selectedValue: this.selectedValue};
     this.emitSortQuizzes.emit(emitData);
   }
