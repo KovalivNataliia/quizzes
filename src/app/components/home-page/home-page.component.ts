@@ -59,28 +59,18 @@ export class HomePageComponent {
     this.noResults = !this.quizzes.length;
   }
 
-  public sortQuizzes(event$: {selectedValue: string}) {
+  public sortQuizzes(event$: {selectedValue: string}): void {
     this.searchMode = false;
     this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
   }
 
-  public createQuiz(event$: CreateQuizData) {
+  public createQuiz(event$: CreateQuizData): void {
     if (event$) {
       this.showSpinner = true;
       const { pointsPerQuestion } = event$;
-      const quizzes = this.quizService.getQuizzes();
       this.quizService.getQuiz(event$).subscribe(quiz => {
-        const lastQuiz = quizzes[quizzes.length - 1];
-        const quizData = {
-          id: lastQuiz.id + 1,
-          quizName: quiz[0].category,
-          pointsPerQuestion: +pointsPerQuestion,
-          timesPlayed: 0,
-          createdByUser: true,
-          quiz
-        }
-        this.quizzes = [...quizzes, quizData];
-        this.quizService.quizzes = this.quizzes;
+        this.quizService.createQuiz(quiz, pointsPerQuestion);
+        this.quizzes = this.quizService.getQuizzes();
         this.showSpinner = false;
         this.searchMode = false;
       })

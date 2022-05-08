@@ -10,7 +10,7 @@ export class convertMillisecondsPipe implements PipeTransform {
       return number.toString().padStart(2, '0');
     }
     let seconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(seconds / 60);
+    const minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
 
     return `${padToTwoDigits(minutes)} : ${padToTwoDigits(seconds)}`;

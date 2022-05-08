@@ -15,18 +15,19 @@ export class QuizPageComponent {
   public currentQuestion$: Observable<string>;
   public currentAnswers$: Observable<string[]>;
   public userAnswers: string[] = [];
+  private _state$ = this.quizService.getState();
 
   constructor(private quizService: QuizService, private dialogService: DialogService) {
-    this.questionCount$ = this.quizService.state$.pipe(
+    this.questionCount$ = this._state$.pipe(
       map((state) => state.currentQuiz.length)
     );
-    this.currentQuestionIndex$ = this.quizService.state$.pipe(
+    this.currentQuestionIndex$ = this._state$.pipe(
       map((state) => state.currentQuestionIndex)
     );
-    this.currentQuestion$ = this.quizService.state$.pipe(
+    this.currentQuestion$ = this._state$.pipe(
       map((state) => state.currentQuiz[state.currentQuestionIndex].question)
     );
-    this.currentAnswers$ = this.quizService.state$.pipe(
+    this.currentAnswers$ = this._state$.pipe(
       map((state) => state.currentAnswers)
     );
   }
@@ -40,7 +41,7 @@ export class QuizPageComponent {
   }
 
   public setAnswer(answer: string): void {
-    const state = this.quizService.getState();
+    const state = this.quizService.getStateValue();
     this.userAnswers[state.currentQuestionIndex] = answer;
   }
 
@@ -50,7 +51,7 @@ export class QuizPageComponent {
   }
 
   public canDeactivate(): Observable<boolean> | boolean {
-    const state = this.quizService.getState();
+    const state = this.quizService.getStateValue();
     if (!state.isQuizDataSaved) {
       return this.dialogService.openLeaveQuizDialog();
     }

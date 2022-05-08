@@ -15,25 +15,37 @@ import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 })
 export class QuizService {
 
-  public state$!: BehaviorSubject<QuizState>;
   public answers!: string[][];
-  public quizzes = QUIZZES;
+  private _state$!: BehaviorSubject<QuizState>;
+  private _quizzes = QUIZZES;
+  private _userQuizzes!: QuizData[];
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this._userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
+    this._quizzes = [...this._quizzes, ...this._userQuizzes];
+  }
 
   public getQuizzes(): QuizData[] {
-    return this.quizzes;
+    return this._quizzes;
   }
 
   public getRandomQuiz(): Observable<QuizItem[]> {
     return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));
   }
 
-  public getState(): QuizState {
-    return this.state$.getValue();
+  public getState(): BehaviorSubject<QuizState> {
+    return this._state$;
+  }
+
+  public getStateValue(): QuizState {
+    return this._state$.getValue();
+  }
+
+  public setState(stateData: QuizState): void {
+    this._state$ = new BehaviorSubject<QuizState>(stateData);
   }
 
   public getQuiz(quizRequestData: CreateQuizData): Observable<QuizItem[]> {
@@ -50,12 +62,8 @@ export class QuizService {
     return this.http.get(this._questionCountUrl + id).pipe(map((response: any) => response.category_question_count));
   }
 
-  public setState(stateData: QuizState): void {
-    this.state$ = new BehaviorSubject<QuizState>(stateData);
-  }
-
   public nextQuestion(): void {
-    const state = this.getState();
+    const state = this.getStateValue();
     const newAnswers = this.answers[state.currentQuestionIndex + 1];
     const newcurrentQuestionIndex = state.currentQuestionIndex + 1;
     this._setPartialState({
@@ -65,7 +73,7 @@ export class QuizService {
   }
 
   public previousQuestion(): void {
-    const state = this.getState();
+    const state = this.getStateValue();
     const newAnswers = this.answers[state.currentQuestionIndex - 1];
     const newcurrentQuestionIndex = state.currentQuestionIndex - 1;
     this._setPartialState({
@@ -75,7 +83,7 @@ export class QuizService {
   }
 
   public getQuizResult(userAnswers: string[]): QuizResult {
-    const state = this.getState();
+    const state = this.getStateValue();
     state.quizEndTime = performance.now();
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
@@ -90,7 +98,7 @@ export class QuizService {
   public shuffleAnswers(quizData: QuizItem[]): string[][] {
     const allAnswers = [];
     for (let quiz of quizData) {
-      let answers = [...quiz.incorrect_answers, quiz.correct_answer];
+      const answers = [...quiz.incorrect_answers, quiz.correct_answer];
       for (let i = answers.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [answers[i], answers[j]] = [answers[j], answers[i]];
@@ -101,7 +109,7 @@ export class QuizService {
   }
 
   public searchQuiz(text: string): QuizData[] {
-    const filteredQuizzes = this.quizzes.filter(quizData => {
+    const filteredQuizzes = this._quizzes.filter(quizData => {
       text = text.toLocaleLowerCase();
       return quizData.quizName.toLocaleLowerCase().includes(text);
     });
@@ -109,7 +117,7 @@ export class QuizService {
   }
 
   public sortQuizzes(selectedValue: string): QuizData[] {
-    const quizzes = [...this.quizzes];
+    const quizzes = [...this._quizzes];
     switch (selectedValue) {
       case 'name':
         return quizzes.sort((a, b) => b.quizName > a.quizName ? -1 : 1);
@@ -120,12 +128,30 @@ export class QuizService {
       case 'playedTimes':
         return quizzes.sort((a, b) => b.timesPlayed - a.timesPlayed);
       default:
-        return this.quizzes
+        return this._quizzes
     }
   }
 
+  public createQuiz(quiz: QuizItem[], pointsPerQuestion: string): void {
+    const lastQuiz = this._quizzes[this._quizzes.length - 1];
+    const quizData = {
+      id: lastQuiz.id + 1,
+      quizName: quiz[0].category,
+      pointsPerQuestion: +pointsPerQuestion,
+      timesPlayed: 0,
+      createdByUser: true,
+      quiz
+    }
+    this._saveUserQuizzes(quizData);
+    this._quizzes = [...this._quizzes, quizData];
+  }
+
+  private _saveUserQuizzes(newQuiz: QuizData): void {
+    localStorage.setItem('userQuizzes', JSON.stringify([...this._userQuizzes, newQuiz]));
+  }
+
   private _setPartialState(partialState: Partial<QuizState>): void {
-    this.state$.next({ ...this.state$.getValue(), ...partialState });
+    this._state$.next({ ...this.getStateValue(), ...partialState });
   }
 
   private _countCorrectAnswers(userAnswers: string[], currentQuiz: QuizItem[]): number {
@@ -139,7 +165,7 @@ export class QuizService {
   }
 
   private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    this.quizzes.map(quizData => {
+    this._quizzes.map(quizData => {
       if (quizData.quiz.every(el => quiz.includes(el))) {
         quizData.timesPlayed++
       }
