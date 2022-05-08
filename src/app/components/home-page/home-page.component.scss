@@ -15,13 +15,17 @@
       height: 60px;
       font-size: 18px;
       letter-spacing: 2px;
+      transition: 0.7s;
+    }
+    .home-play-btn:hover {
+      opacity: 0.8;
     }
     .home-quizzes-container {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       margin: 40px 0;
-      .home-quiz-card{
+      .home-quiz-card {
         flex: 0 1 calc((100% / 3) - 20px);
       }
     }

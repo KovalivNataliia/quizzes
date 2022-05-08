@@ -1,9 +1,10 @@
-html, body { height: 100%; }
+html, body { height: 100%; scroll-behavior: smooth; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .container {
   max-width: 1200px;
-  margin: 60px auto;
+  margin: 150px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
