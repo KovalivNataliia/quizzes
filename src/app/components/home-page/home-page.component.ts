@@ -63,7 +63,7 @@ export class HomePageComponent {
     this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
   }
 
-  createQuiz(event$: CreateQuizData) {
+  public createQuiz(event$: CreateQuizData) {
     if (event$) {
       const { pointsPerQuestion } = event$;
       this.quizService.getQuiz(event$).subscribe(quiz => {

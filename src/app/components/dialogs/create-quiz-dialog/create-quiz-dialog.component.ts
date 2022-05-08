@@ -10,12 +10,12 @@ import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 })
 export class CreateQuizDialogComponent {
 
-  quizCategories!: QuizCategory[];
-  categoryId!: string;
-  quizDifficulty!: string;
-  pointsPerQuestion!: string;
-  questionCount!: number;
-  maxQuestionCount!: number;
+  public quizCategories!: QuizCategory[];
+  public categoryId!: string;
+  public quizDifficulty!: string;
+  public pointsPerQuestion!: string;
+  public questionCount!: number;
+  public maxQuestionCount!: number;
 
   constructor(
     private dialogRef: MatDialogRef<CreateQuizDialogComponent>,
@@ -26,11 +26,11 @@ export class CreateQuizDialogComponent {
     });
   }
 
-  cancel(): void {
+  public cancel(): void {
     this.dialogRef.close();
   }
 
-  getQuestionCount(): void {
+  public getQuestionCount(): void {
     this.quizService.getQuestionCount(this.categoryId).subscribe(questionCount => {
       const key = `total_${this.quizDifficulty}_question_count`;
       this.maxQuestionCount = questionCount[key] > 50 ? 50 : questionCount[key];

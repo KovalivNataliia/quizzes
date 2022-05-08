@@ -12,8 +12,8 @@ export class HomeSidebarComponent {
   @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
   @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
   @Output() emitCreateQuiz: EventEmitter<CreateQuizData> = new EventEmitter();
-  public text: string = '';
-  public selectedValue: string = '';
+  public text = '';
+  public selectedValue = '';
 
   constructor(private dialogService: DialogService) {}
 
@@ -28,7 +28,7 @@ export class HomeSidebarComponent {
     this.emitSortQuizzes.emit(emitData);
   }
 
-  createQuiz(): void {
+  public createQuiz(): void {
     this.dialogService.openCreateQuizDialog().subscribe(result => {
       this.emitCreateQuiz.emit(result);
     });;

@@ -11,7 +11,7 @@ export class QuizCardComponent {
   @Input() quizData!: QuizData;
   @Output() emitPlayQuiz: EventEmitter<QuizData> = new EventEmitter();
 
-  playQuiz(quizData: QuizData): void {
+  public playQuiz(quizData: QuizData): void {
     this.emitPlayQuiz.emit(quizData);
   }
 }

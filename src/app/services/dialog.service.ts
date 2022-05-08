@@ -20,7 +20,6 @@ export class DialogService {
       width: '500px',
       data: quizResult
     });
-
     dialogRef.afterClosed().subscribe(() => this.router.navigate(['/home']));
   }
 
@@ -31,7 +30,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  openCreateQuizDialog(): Observable<CreateQuizData> {
+  public openCreateQuizDialog(): Observable<CreateQuizData> {
     const dialogRef = this.dialog.open(CreateQuizDialogComponent, {
       width: '500px'
     });

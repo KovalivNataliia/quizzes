@@ -36,17 +36,17 @@ export class QuizService {
     return this.state$.getValue();
   }
 
-  getQuiz(quizRequestData: CreateQuizData): Observable<QuizItem[]> {
+  public getQuiz(quizRequestData: CreateQuizData): Observable<QuizItem[]> {
     const { questionCount, categoryId, quizDifficulty } = quizRequestData;
     const url = `https://opentdb.com/api.php?amount=${questionCount}&category=${categoryId}&difficulty=${quizDifficulty}`;
     return this.http.get(url).pipe(map((response: any) => response.results));
   }
 
-  getQuizCategories(): Observable<QuizCategory[]> {
+  public getQuizCategories(): Observable<QuizCategory[]> {
     return this.http.get(this._quizCategoriesUrl).pipe(map((response: any) => response.trivia_categories));
   }
 
-  getQuestionCount(id: string): Observable<{ [key: string]: number }> {
+  public getQuestionCount(id: string): Observable<{ [key: string]: number }> {
     return this.http.get(this._questionCountUrl + id).pipe(map((response: any) => response.category_question_count));
   }
 
