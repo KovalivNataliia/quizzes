@@ -21,6 +21,7 @@ export class HomeSidebarComponent {
     const emitData = {text: this.text};
     this.emitSearchByQuizName.emit(emitData);
     this.text = '';
+    this.selectedValue = '';
   }
 
   public sortQuizzes(): void {

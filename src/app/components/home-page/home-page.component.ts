@@ -60,14 +60,17 @@ export class HomePageComponent {
   }
 
   public sortQuizzes(event$: {selectedValue: string}) {
+    this.searchMode = false;
     this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
   }
 
   public createQuiz(event$: CreateQuizData) {
     if (event$) {
+      this.showSpinner = true;
       const { pointsPerQuestion } = event$;
+      const quizzes = this.quizService.getQuizzes();
       this.quizService.getQuiz(event$).subscribe(quiz => {
-        const lastQuiz = this.quizzes[this.quizzes.length - 1];
+        const lastQuiz = quizzes[quizzes.length - 1];
         const quizData = {
           id: lastQuiz.id + 1,
           quizName: quiz[0].category,
@@ -76,8 +79,10 @@ export class HomePageComponent {
           createdByUser: true,
           quiz
         }
-        this.quizzes = [...this.quizzes, quizData];
+        this.quizzes = [...quizzes, quizData];
         this.quizService.quizzes = this.quizzes;
+        this.showSpinner = false;
+        this.searchMode = false;
       })
     }
   }
