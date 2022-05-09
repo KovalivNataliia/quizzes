@@ -145,12 +145,33 @@ export class QuizService {
       createdByUser: true,
       quiz
     }
-    this._saveUserQuizzes(quizData);
+    this._userQuizzes = [...this._userQuizzes, quizData]
+    this._saveUserQuizzes();
     this._quizzes = [...this._quizzes, quizData];
   }
 
-  private _saveUserQuizzes(newQuiz: QuizData): void {
-    localStorage.setItem('userQuizzes', JSON.stringify([...this._userQuizzes, newQuiz]));
+  public removeQuiz(quizId: number): void {
+    this._userQuizzes.map((quiz, idx, arr) => {
+      if (quiz.id === quizId) {
+        arr.splice(idx, 1);
+      }
+    });
+    this._saveUserQuizzes();
+
+    this._quizzes.map((quiz, idx, arr) => {
+      if (quiz.id === quizId) {
+        arr.splice(idx, 1);
+      }
+    });
+
+    if (this._userTimesPlayedData[quizId]) {
+      delete this._userTimesPlayedData[quizId];
+      this._saveUserTimesPlayedData();
+    }
+  }
+
+  private _saveUserQuizzes(): void {
+    localStorage.setItem('userQuizzes', JSON.stringify(this._userQuizzes));
   }
 
   private _saveUserTimesPlayedData(): void {

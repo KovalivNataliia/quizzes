@@ -77,6 +77,13 @@ export class HomePageComponent {
     }
   }
 
+  public removeQuiz($event: {quizId: number}): void {
+    const { quizId } = $event;
+    this.quizService.removeQuiz(quizId);
+    this.quizzes = this.quizService.getQuizzes();
+    this.searchMode = false;
+  }
+
   public goBack(): void {
     this.searchMode = false;
     this.quizzes = this.quizService.getQuizzes();

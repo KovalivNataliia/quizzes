@@ -7,7 +7,8 @@
       <button mat-raised-button color="accent" class="home-play-btn" (click)="playRandomQuiz()">I'm lucky</button>
       <div class="home-quizzes-container">
         <app-quiz-card class="home-quiz-card" *ngFor="let quiz of quizzes" [quizData]="quiz"
-          (emitPlayQuiz)="playQuiz($event)"></app-quiz-card>
+          (emitPlayQuiz)="playQuiz($event)" (emitRemoveQuiz)="removeQuiz($event)">
+        </app-quiz-card>
       </div>
       <ng-container *ngIf="searchMode">
         <h3 *ngIf="noResults">No results found</h3>
