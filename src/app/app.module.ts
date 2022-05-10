@@ -11,6 +11,7 @@ import { HeaderModule } from '@modules/header.module';
 import { HomePageModule } from '@modules/home-page.module';
 import { QuizPageModule } from '@modules/quiz-page.module';
 import { DialogModule } from '@modules/dialog.module';
+import { AuthorizationPageModule } from '@modules/authorization-page.module';
 import { QuizService } from '@services/quiz.service';
 import { DialogService } from '@services/dialog.service';
 import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
@@ -31,7 +32,8 @@ import { SpinnerService } from '@services/spinner.service';
     HomePageModule,
     QuizPageModule,
     DialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    AuthorizationPageModule
   ],
   providers: [
     QuizService,

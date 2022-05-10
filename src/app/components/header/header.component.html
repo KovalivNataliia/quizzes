@@ -1,4 +1,11 @@
 <mat-toolbar color="primary" class="header">
   <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()">
   <span class="header-title">Quizzes</span>
+  <span class="header-spacer"></span>
+  <button mat-raised-button class="header-login-btn" routerLink="/auth">
+    Log In
+  </button>
+  <button mat-raised-button class="header-reg-btn" routerLink="/registration">
+    Register
+  </button>
 </mat-toolbar>

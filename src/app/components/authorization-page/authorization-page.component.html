@@ -1,0 +1,36 @@
+<mat-card class="auth-card">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>{{ title }}</h2>
+    <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" name="email">
+      <mat-error>
+        Please enter your email
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Password" formControlName="password"
+        name="password">
+      <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error>
+        Please enter your password
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="isRegistration">
+      <input matInput [type]="hideRepeatPassword ? 'password' : 'text'" placeholder="Repeat password"
+        formControlName="repeatPassword" name="repeatPassword">
+      <button type="button" mat-icon-button matSuffix (click)="hideRepeatPassword = !hideRepeatPassword"
+        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepeatPassword">
+        <mat-icon>{{ hideRepeatPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="form.get('repeatPassword')!.hasError('notSame')">
+        Passwords don't match
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button class="auth-btn" color="primary" [disabled]="!form.valid">
+      {{ buttonText }}
+    </button>
+  </form>
+</mat-card>
