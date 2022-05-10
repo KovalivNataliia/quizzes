@@ -1,6 +1,9 @@
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
 
 export interface QuizData {
-  response_code: number,
-  results: QuizItem[],
+  quizName: string,
+  pointsPerQuestion: number,
+  timesPlayed: number,
+  createdByUser: boolean,
+  quiz: QuizItem[]
 }

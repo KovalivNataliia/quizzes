@@ -6,6 +6,7 @@ import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
 import { QuizData } from '@shared/interfaces/quizData.interface';
+import { QUIZZES } from '@shared/quizzes-data';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,17 @@ export class QuizService {
 
   state$!: BehaviorSubject<QuizState>;
   answers!: string[][];
+  private _quizzes: QuizData[] = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
 
   constructor(private http: HttpClient) { }
 
-  getRandomQuiz(): Observable<QuizData> {
-    return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response));
+  getQuizzes(): QuizData[] {
+    return this._quizzes;
+  }
+
+  getRandomQuiz(): Observable<QuizItem[]> {
+    return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));
   }
 
   getState(): QuizState {
@@ -56,6 +62,7 @@ export class QuizService {
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
+    this._changeTimesPlayedData(state.currentQuiz);
     this._setPartialState({
       isQuizDataSaved: true
     });
@@ -87,6 +94,13 @@ export class QuizService {
       }
     }
     return correctAnswersCount
+  }
+
+  private _changeTimesPlayedData(quiz: QuizItem[]): void {
+    const currentQuiz = this._quizzes.filter(quizData => quizData.quiz === quiz)[0];
+    if (currentQuiz) {
+      currentQuiz.timesPlayed++
+    }
   }
 
 }

@@ -4,6 +4,5 @@ export interface QuizItem {
   difficulty: string,
   question: string,
   correct_answer: string,
-  incorrect_answers: string[],
-  pointsPerQuestion?: number
+  incorrect_answers: string[]
 }

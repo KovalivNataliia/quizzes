@@ -1,0 +1,10 @@
+<mat-card class="quiz-card">
+  <h2 class="quiz-card-title">{{ quizData.quizName }}</h2>
+  <p>Questions: {{ quizData.quiz.length }} </p>
+  <p>Points per question: {{ quizData.pointsPerQuestion }} </p>
+  <p>Times played: {{ quizData.timesPlayed}} </p>
+  <div class="quiz-card-btn-container">
+    <button mat-raised-button color="primary" class="quiz-card-btn" (click)="playQuiz(quizData)">Play</button>
+    <button *ngIf="quizData.createdByUser" mat-raised-button class="quiz-card-btn">Remove</button>
+  </div>
+</mat-card>
