@@ -10,6 +10,7 @@
       "@modules/*": ["src/app/modules/*"],
       "@shared/*": ["src/app/shared/*"],
       "@pipes/*": ["src/app/pipes/*"],
+      "@interceptors/*": ["src/app/interceptors/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

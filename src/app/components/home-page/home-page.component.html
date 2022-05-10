@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="!showSpinner; else spinner">
+  <ng-container *ngIf="!(showSpinner | async); else spinner">
     <app-home-sidebar class="home-sidebar" (emitSearchByQuizName)="searchByQuizName($event)"
       (emitSortQuizzes)="sortQuizzes($event)"
       (emitCreateQuiz)="createQuiz($event)"></app-home-sidebar>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { QuizService } from '@services/quiz.service';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
+import { SpinnerService } from '@services/spinner.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,14 +13,18 @@ import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 export class HomePageComponent {
 
   public quizzes = this.quizService.getQuizzes();
-  public showSpinner = false;
+  public showSpinner = this.spinnerService.showSpinner;
   public noResults = false;
   public searchMode = false;
 
-  constructor(private quizService: QuizService, private router: Router) { }
+  constructor(
+    private quizService: QuizService,
+    private router: Router,
+    private spinnerService: SpinnerService
+  ) { }
 
   public playRandomQuiz(): void {
-    this.showSpinner = true;
+    this.spinnerService.show();
     this.quizService.getRandomQuiz().subscribe(quiz => {
       this.quizService.answers = this.quizService.shuffleAnswers(quiz);
       const stateData = {
@@ -33,11 +38,11 @@ export class HomePageComponent {
       }
       this.quizService.setState(stateData);
       this.router.navigate(['/quiz']);
+      this.spinnerService.hide();
     });
   }
 
   public playQuiz(quizData: QuizData): void {
-    this.showSpinner = true;
     const quiz = quizData.quiz;
     this.quizService.answers = this.quizService.shuffleAnswers(quiz);
     const stateData = {
@@ -66,14 +71,14 @@ export class HomePageComponent {
 
   public createQuiz(event$: CreateQuizData): void {
     if (event$) {
-      this.showSpinner = true;
+      this.spinnerService.show();
       const { pointsPerQuestion } = event$;
       this.quizService.getQuiz(event$).subscribe(quiz => {
         this.quizService.createQuiz(quiz, pointsPerQuestion);
         this.quizzes = this.quizService.getQuizzes();
-        this.showSpinner = false;
         this.searchMode = false;
-      })
+        this.spinnerService.hide();
+      });
     }
   }
 
