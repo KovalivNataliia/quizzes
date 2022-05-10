@@ -10,12 +10,14 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 })
 export class HomePageComponent {
 
-  showSpinner: boolean = false;
-  quizzes: QuizData[] = this.quizService.getQuizzes();
+  public quizzes = this.quizService.getQuizzes();
+  public showSpinner = false;
+  public noResults = false;
+  public searchMode = false;
 
   constructor(private quizService: QuizService, private router: Router) { }
 
-  playRandomQuiz(): void {
+  public playRandomQuiz(): void {
     this.showSpinner = true;
     this.quizService.getRandomQuiz().subscribe(quiz => {
       this.quizService.answers = this.quizService.shuffleAnswers(quiz);
@@ -33,7 +35,7 @@ export class HomePageComponent {
     });
   }
 
-  playQuiz(quizData: QuizData): void {
+  public playQuiz(quizData: QuizData): void {
     this.showSpinner = true;
     const quiz = quizData.quiz;
     this.quizService.answers = this.quizService.shuffleAnswers(quiz);
@@ -48,6 +50,21 @@ export class HomePageComponent {
     }
     this.quizService.setState(stateData);
     this.router.navigate(['/quiz']);
+  }
+
+  public searchByQuizName(event$: {text: string}): void {
+    this.searchMode = true;
+    this.quizzes = this.quizService.searchQuiz(event$.text);
+    this.noResults = !this.quizzes.length;
+  }
+
+  public sortQuizzes(event$: {selectedValue: string}) {
+    this.quizzes = this.quizService.sortQuizzes(event$.selectedValue);
+  }
+
+  public goBack(): void {
+    this.searchMode = false;
+    this.quizzes = this.quizService.getQuizzes();
   }
 
 }

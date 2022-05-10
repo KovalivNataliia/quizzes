@@ -1,0 +1,29 @@
+.sidebar-container {
+  .sidebar-btn {
+    width: 200px;
+    height: 52.5px;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+  .sidebar-search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 0 20px;
+    .sidebar-search-field {
+      width: 100%;
+    }
+    .sidebar-search-btn {
+      width: 150px;
+    }
+  }
+  .sidebar-sort-field {
+    width: 100%;
+  }
+  .sidebar-btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

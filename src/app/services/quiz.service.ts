@@ -13,30 +13,30 @@ import { QUIZZES } from '@shared/quizzes-data';
 })
 export class QuizService {
 
-  state$!: BehaviorSubject<QuizState>;
-  answers!: string[][];
-  private _quizzes: QuizData[] = QUIZZES;
+  public state$!: BehaviorSubject<QuizState>;
+  public answers!: string[][];
+  private _quizzes = QUIZZES;
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
 
   constructor(private http: HttpClient) { }
 
-  getQuizzes(): QuizData[] {
+  public getQuizzes(): QuizData[] {
     return this._quizzes;
   }
 
-  getRandomQuiz(): Observable<QuizItem[]> {
+  public getRandomQuiz(): Observable<QuizItem[]> {
     return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));
   }
 
-  getState(): QuizState {
+  public getState(): QuizState {
     return this.state$.getValue();
   }
 
-  setState(stateData: QuizState): void {
+  public setState(stateData: QuizState): void {
     this.state$ = new BehaviorSubject<QuizState>(stateData);
   }
 
-  nextQuestion(): void {
+  public nextQuestion(): void {
     const state = this.getState();
     const newAnswers = this.answers[state.currentQuestionIndex + 1];
     const newcurrentQuestionIndex = state.currentQuestionIndex + 1;
@@ -46,7 +46,7 @@ export class QuizService {
     });
   }
 
-  previousQuestion(): void {
+  public previousQuestion(): void {
     const state = this.getState();
     const newAnswers = this.answers[state.currentQuestionIndex - 1];
     const newcurrentQuestionIndex = state.currentQuestionIndex - 1;
@@ -56,7 +56,7 @@ export class QuizService {
     });
   }
 
-  getQuizResult(userAnswers: string[]): QuizResult {
+  public getQuizResult(userAnswers: string[]): QuizResult {
     const state = this.getState();
     state.quizEndTime = performance.now();
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
@@ -66,10 +66,10 @@ export class QuizService {
     this._setPartialState({
       isQuizDataSaved: true
     });
-    return {correctAnswersCount, pointsCount, quizTimeCount};
+    return { correctAnswersCount, pointsCount, quizTimeCount };
   }
 
-  shuffleAnswers(quizData: QuizItem[]): string[][] {
+  public shuffleAnswers(quizData: QuizItem[]): string[][] {
     const allAnswers = [];
     for (let quiz of quizData) {
       let answers = [...quiz.incorrect_answers, quiz.correct_answer];
@@ -80,6 +80,30 @@ export class QuizService {
       allAnswers.push(answers);
     }
     return allAnswers
+  }
+
+  public searchQuiz(text: string): QuizData[] {
+    const filteredQuizzes = this._quizzes.filter(quizData => {
+      text = text.toLocaleLowerCase();
+      return quizData.quizName.toLocaleLowerCase().includes(text);
+    });
+    return filteredQuizzes;
+  }
+
+  public sortQuizzes(selectedValue: string): QuizData[] {
+    const quizzes = [...this._quizzes];
+    switch (selectedValue) {
+      case 'name':
+        return quizzes.sort((a, b) => b.quizName > a.quizName ? -1 : 1);
+      case 'points':
+        return quizzes.sort((a, b) => b.pointsPerQuestion - a.pointsPerQuestion);
+      case 'questions':
+        return quizzes.sort((a, b) => b.quiz.length - a.quiz.length);
+      case 'playedTimes':
+        return quizzes.sort((a, b) => b.timesPlayed - a.timesPlayed);
+      default:
+        return this._quizzes
+    }
   }
 
   private _setPartialState(partialState: Partial<QuizState>): void {
@@ -97,10 +121,11 @@ export class QuizService {
   }
 
   private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    const currentQuiz = this._quizzes.filter(quizData => quizData.quiz === quiz)[0];
-    if (currentQuiz) {
-      currentQuiz.timesPlayed++
-    }
+    this._quizzes.map(quizData => {
+      if (quizData.quiz.every(el => quiz.includes(el))) {
+        quizData.timesPlayed++
+      }
+    });
   }
 
 }

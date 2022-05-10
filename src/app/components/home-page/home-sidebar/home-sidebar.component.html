@@ -1,0 +1,30 @@
+<mat-card class="sidebar-container">
+  <div class="sidebar-search-form">
+    <mat-form-field appearance="fill" class="sidebar-search-field">
+      <mat-label>Search by quiz name</mat-label>
+      <input matInput name="text" [(ngModel)]="text">
+    </mat-form-field>
+    <button class="sidebar-search-btn sidebar-btn" mat-stroked-button color="warn" (click)="searchByQuizName()"
+      [disabled]="!text">
+      Search
+    </button>
+  </div>
+  <mat-form-field appearance="fill" class="sidebar-sort-field">
+    <mat-label>Sort quizzes by</mat-label>
+    <mat-select [(value)]="selectedValue" (valueChange)="sortQuizzes()">
+      <mat-option>None</mat-option>
+      <mat-option value="name">Name</mat-option>
+      <mat-option value="points">Points per question</mat-option>
+      <mat-option value="questions">Questions</mat-option>
+      <mat-option value="playedTimes">Played times</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="sidebar-btn-container">
+    <button class="sidebar-create-btn sidebar-btn" mat-stroked-button color="accent">
+      Create quiz
+    </button>
+    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary">
+      See statistic
+    </button>
+  </div>
+</mat-card>
