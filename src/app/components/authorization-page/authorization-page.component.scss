@@ -1,0 +1,11 @@
+.auth-card {
+  max-width: 400px;
+  margin: 200px auto 0;
+  text-align: center;
+  mat-form-field {
+    display: block;
+  }
+  .auth-btn {
+    margin-top: 10px;
+  }
+}
