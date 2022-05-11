@@ -12,13 +12,13 @@ export class ServerErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = '';
+        this.spinnerService.hide();
         if (error.error instanceof HttpErrorResponse) {
-          errorMessage = `Server Error (${error.status}): ${error.message}`;
+          errorMessage = `Server Error (${error.status}): ${error.error.message}`;
         }
         else {
-          errorMessage = `Client Error (${error.status}): ${error.message}`;
+          errorMessage = `Client Error (${error.status}): ${error.error.message}`;
         }
-        this.spinnerService.hide()
         return throwError(() => new Error(errorMessage));
       })
     )

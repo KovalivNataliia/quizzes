@@ -18,6 +18,7 @@ import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 import { ServerErrorInterceptor } from '@interceptors/http-error.interceptor';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { SpinnerService } from '@services/spinner.service';
+import { AuthorizationService } from '@services/authorization.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SpinnerService } from '@services/spinner.service';
     QuizService,
     DialogService,
     SpinnerService,
+    AuthorizationService,
     LeaveQuizGuard,
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
