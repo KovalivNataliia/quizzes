@@ -1,4 +1,4 @@
-<mat-card class="quiz-card">
+<mat-card class="quiz-card" hoverEffect [createdByUser]="quizData.createdByUser">
   <h2 class="quiz-card-title">{{ quizData.quizName }}</h2>
   <p>Questions: {{ quizData.quiz.length }} </p>
   <p>Points per question: {{ quizData.pointsPerQuestion }} </p>

@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="header">
-  <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()">
+  <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()" routerLink="/home">
   <span class="header-title">Quizzes</span>
   <span class="header-spacer"></span>
   <button mat-raised-button class="header-login-btn" routerLink="/auth">
