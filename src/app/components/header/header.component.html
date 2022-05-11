@@ -2,10 +2,18 @@
   <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()" routerLink="/home">
   <span class="header-title">Quizzes</span>
   <span class="header-spacer"></span>
-  <button mat-raised-button class="header-login-btn" routerLink="/auth">
-    Log In
-  </button>
-  <button mat-raised-button class="header-reg-btn" routerLink="/registration">
-    Register
-  </button>
+  <ng-container *ngIf="isAuth$ | async; else authBtns">
+    <h2 class="header-username">{{ userName$ | async}}</h2>
+    <button mat-raised-button (click)="logOut()">
+      Log Out
+    </button>
+  </ng-container>
+  <ng-template #authBtns>
+    <button mat-raised-button class="header-login-btn" routerLink="/auth">
+      Log In
+    </button>
+    <button mat-raised-button class="header-reg-btn" routerLink="/registration">
+      Register
+    </button>
+  </ng-template>
 </mat-toolbar>
