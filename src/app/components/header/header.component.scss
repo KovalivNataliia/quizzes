@@ -9,8 +9,10 @@
     align-items: center;
     width: 1400px;
     margin: auto;
-    .header-logo {
+    .header-logo-container {
       cursor: pointer;
+      display: flex;
+      align-items: center;
     }
     .header-title {
       margin-left: 10px;

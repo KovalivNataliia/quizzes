@@ -20,10 +20,11 @@
     </mat-select>
   </mat-form-field>
   <div class="sidebar-btn-container">
-    <button class="sidebar-create-btn sidebar-btn" mat-stroked-button color="accent" (click)="createQuiz()">
+    <button class="sidebar-create-btn sidebar-btn" mat-stroked-button color="accent" (click)="createQuiz()"
+      [disabled]="!(isAuth$ | async)">
       Create quiz
     </button>
-    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary">
+    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary" [disabled]="!(isAuth$ | async)">
       See statistic
     </button>
   </div>

@@ -18,21 +18,22 @@ export class QuizService {
   public answers!: string[][];
   private _state$!: BehaviorSubject<QuizState>;
   private _quizzes = QUIZZES;
-  private _userQuizzes!: QuizData[];
+  private _userQuizzes: QuizData[] = [];
   private _userTimesPlayedData!: { [key: string]: number };
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
 
-  constructor(private http: HttpClient) {
-    this._userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
-    this._userTimesPlayedData = JSON.parse(localStorage.getItem('userTimesPlayedData')!) || {};
-    this._quizzes = [...this._quizzes, ...this._userQuizzes];
-    this._quizzes.map(quiz => quiz.timesPlayed = this._userTimesPlayedData[quiz.id] || 0)
+  constructor(private http: HttpClient) { 
+    this.getUserTimesPlayedData();
   }
 
   public getQuizzes(): QuizData[] {
     return this._quizzes;
+  }
+
+  public resetQuizzes(): void {
+    this._quizzes = QUIZZES;
   }
 
   public getState(): BehaviorSubject<QuizState> {
@@ -46,7 +47,7 @@ export class QuizService {
   public setState(stateData: QuizState): void {
     this._state$ = new BehaviorSubject<QuizState>(stateData);
   }
-  
+
   public getRandomQuiz(): Observable<QuizItem[]> {
     return this.http.get(this._randomQuizUrl).pipe(map((response: any) => response.results));
   }
@@ -158,6 +159,16 @@ export class QuizService {
       delete this._userTimesPlayedData[quizId];
       this._saveUserTimesPlayedData();
     }
+  }
+
+  public getUserQuizzes(): void {
+    this._userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
+    this._quizzes = [...this._quizzes, ...this._userQuizzes];
+  }
+
+  public getUserTimesPlayedData(): void {
+    this._userTimesPlayedData = JSON.parse(localStorage.getItem('userTimesPlayedData')!) || {};
+    this._quizzes.map(quiz => quiz.timesPlayed = this._userTimesPlayedData[quiz.id] || 0);
   }
 
   private _saveUserQuizzes(): void {

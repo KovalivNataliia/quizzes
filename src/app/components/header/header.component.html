@@ -1,7 +1,9 @@
 <mat-toolbar color="primary" class="header">
   <div class="header-content">
-    <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()" routerLink="/home">
-    <span class="header-title">Quizzes</span>
+    <div class="header-logo-container" (click)="toTop()" routerLink="/home">
+      <img [src]="'logo.svg' | imagePath" alt="logo">
+      <span class="header-title">Quizzes</span>
+    </div>
     <span class="header-spacer"></span>
     <ng-container *ngIf="currentUrl !== '/quiz'">
       <ng-container *ngIf="isAuth$ | async; else authBtns">

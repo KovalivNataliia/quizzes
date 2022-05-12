@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { UserReqData } from "@shared/interfaces/userReqData.interface";
 import { UserResData } from "@shared/interfaces/userResData.interface";
 import { BehaviorSubject, map, Observable } from "rxjs";
+import { QuizService } from "./quiz.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthorizationService {
   private _url = 'http://localhost:8080/api/auth/'
   private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private quizService: QuizService) { 
     this.isAuth.next(!!sessionStorage.getItem('userToken'));
     this.username.next(sessionStorage.getItem('userName')!);
   }
@@ -41,6 +42,7 @@ export class AuthorizationService {
   public logoutUser(): void {
     this.isAuth.next(false);
     sessionStorage.clear();
+    this.quizService.resetQuizzes();
   }
 
 }
