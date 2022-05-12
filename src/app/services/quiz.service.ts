@@ -151,19 +151,9 @@ export class QuizService {
   }
 
   public removeQuiz(quizId: number): void {
-    this._userQuizzes.map((quiz, idx, arr) => {
-      if (quiz.id === quizId) {
-        arr.splice(idx, 1);
-      }
-    });
+    this._userQuizzes = this._userQuizzes.filter(quiz => quiz.id !== quizId);
+    this._quizzes = this._quizzes.filter(quiz => quiz.id !== quizId);
     this._saveUserQuizzes();
-
-    this._quizzes.map((quiz, idx, arr) => {
-      if (quiz.id === quizId) {
-        arr.splice(idx, 1);
-      }
-    });
-
     if (this._userTimesPlayedData[quizId]) {
       delete this._userTimesPlayedData[quizId];
       this._saveUserTimesPlayedData();

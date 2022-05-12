@@ -1,19 +1,21 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { DialogService } from '@services/dialog.service';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-sidebar',
   templateUrl: './home-sidebar.component.html',
   styleUrls: ['./home-sidebar.component.scss']
 })
-export class HomeSidebarComponent {
+export class HomeSidebarComponent implements OnDestroy {
 
   @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
   @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
   @Output() emitCreateQuiz: EventEmitter<CreateQuizData> = new EventEmitter();
   public text = '';
   public selectedValue = '';
+  private _subscriptions = new Subscription();
 
   constructor(private dialogService: DialogService) {}
 
@@ -30,9 +32,15 @@ export class HomeSidebarComponent {
   }
 
   public createQuiz(): void {
-    this.dialogService.openCreateQuizDialog().subscribe(result => {
-      this.emitCreateQuiz.emit(result);
-    });;
+    this._subscriptions.add(
+      this.dialogService.openCreateQuizDialog().subscribe(result => {
+        this.emitCreateQuiz.emit(result);
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.unsubscribe();
   }
 
 }

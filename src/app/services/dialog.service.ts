@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LeaveQuizDialogComponent } from '@components/dialogs/leave-quiz-dialog/leave-quiz-dialog.component';
 import { ResultDialogComponent } from '@components/dialogs/result-dialog/result-dialog.component';
@@ -13,14 +12,14 @@ import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 })
 export class DialogService {
 
-  constructor(public dialog: MatDialog, private router: Router) { }
+  constructor(public dialog: MatDialog) { }
 
-  public openResultDialog(quizResult: QuizResult): void {
+  public openResultDialog(quizResult: QuizResult): Observable<boolean> {
     const dialogRef = this.dialog.open(ResultDialogComponent, {
       width: '500px',
       data: quizResult
     });
-    dialogRef.afterClosed().subscribe(() => this.router.navigate(['/home']));
+    return dialogRef.afterClosed();
   }
 
   public openLeaveQuizDialog(): Observable<boolean> {
