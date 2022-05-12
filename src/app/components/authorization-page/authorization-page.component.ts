@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class AuthorizationPageComponent implements OnInit, OnDestroy {
 
+
   public hidePassword = true;
   public hideRepeatPassword = true;
   public isRegistration = true;
