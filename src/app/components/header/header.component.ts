@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { AuthorizationService } from '@services/authorization.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router, Event } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -12,12 +12,19 @@ export class HeaderComponent {
 
   public isAuth$ = this.authService.isAuth;
   public userName$ = this.authService.username;
+  public currentUrl!: string;
 
   constructor(
     private viewportScroller: ViewportScroller,
     private authService: AuthorizationService,
     private router: Router
-  ) { }
+  ) {
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.url;
+      }
+    });
+  }
 
   public toTop(): void {
     this.viewportScroller.scrollToPosition([0, 0]);

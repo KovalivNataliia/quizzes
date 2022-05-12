@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { SpinnerComponent } from '@components/spinner/spinner.component';
 import { HeaderModule } from '@modules/header.module';
 import { HomePageModule } from '@modules/home-page.module';
 import { QuizPageModule } from '@modules/quiz-page.module';
@@ -14,15 +16,17 @@ import { DialogModule } from '@modules/dialog.module';
 import { AuthorizationPageModule } from '@modules/authorization-page.module';
 import { QuizService } from '@services/quiz.service';
 import { DialogService } from '@services/dialog.service';
-import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
-import { ServerErrorInterceptor } from '@interceptors/http-error.interceptor';
 import { ErrorHandlerService } from '@services/error-handler.service';
 import { SpinnerService } from '@services/spinner.service';
 import { AuthorizationService } from '@services/authorization.service';
+import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
+import { ServerErrorInterceptor } from '@interceptors/http-error.interceptor';
+import { SpinnerInterceptor } from '@interceptors/spinner.interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ import { AuthorizationService } from '@services/authorization.service';
     QuizPageModule,
     DialogModule,
     MatSnackBarModule,
-    AuthorizationPageModule
+    AuthorizationPageModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     QuizService,
@@ -47,7 +52,12 @@ import { AuthorizationService } from '@services/authorization.service';
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,
       multi: true,
-    }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true,
+   },
   ],
   bootstrap: [AppComponent]
 })
