@@ -10,8 +10,8 @@ import { NavigationEnd, Router, Event } from '@angular/router';
 })
 export class HeaderComponent {
 
-  public isAuth$ = this.authService.isAuth;
-  public userName$ = this.authService.username;
+  public isAuth$ = this.authService.isAuth$;
+  public userName$ = this.authService.username$;
   public currentUrl!: string;
 
   constructor(

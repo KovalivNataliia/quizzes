@@ -10,14 +10,14 @@ import { QuizService } from "./quiz.service";
 })
 export class AuthorizationService {
 
-  public isAuth = new BehaviorSubject<boolean>(false);
-  public username = new BehaviorSubject<string>('');
+  public isAuth$ = new BehaviorSubject<boolean>(false);
+  public username$ = new BehaviorSubject<string>('');
   private _url = 'http://localhost:8080/api/auth/'
   private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  constructor(private http: HttpClient, private quizService: QuizService) { 
-    this.isAuth.next(!!sessionStorage.getItem('userToken'));
-    this.username.next(sessionStorage.getItem('userName')!);
+  constructor(private http: HttpClient, private quizService: QuizService) {
+    this.isAuth$.next(!!sessionStorage.getItem('userToken'));
+    this.username$.next(sessionStorage.getItem('userName')!);
   }
 
   public registerUser(userData: UserReqData): Observable<UserResData> {
@@ -35,12 +35,12 @@ export class AuthorizationService {
   public storeUser(token: string, username: string): void {
     sessionStorage.setItem('userToken', token);
     sessionStorage.setItem('userName', username);
-    this.username.next(username)
-    this.isAuth.next(true);
+    this.username$.next(username)
+    this.isAuth$.next(true);
   }
 
   public logoutUser(): void {
-    this.isAuth.next(false);
+    this.isAuth$.next(false);
     sessionStorage.clear();
     this.quizService.resetQuizzes();
   }

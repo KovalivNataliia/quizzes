@@ -8,7 +8,7 @@ import { SpinnerService } from '@services/spinner.service';
 })
 export class SpinnerComponent {
 
-  public showSpinner = this.spinnerService.showSpinner;
+  public showSpinner$ = this.spinnerService.showSpinner;
 
   constructor(private spinnerService: SpinnerService) { }
 

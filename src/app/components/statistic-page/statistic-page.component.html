@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="statistic-chart-container">
+    <h2 class="statistic-chart-title">Quizzes played</h2>
+    <canvas baseChart [data]="quizzesPlayedData" [type]="pieChartType">
+    </canvas>
+  </div>
+  <div class="statistic-chart-container">
+    <h2 class="statistic-chart-title">Correct answers</h2>
+    <canvas baseChart [data]="correctAnswersData" [type]="pieChartType">
+    </canvas>
+  </div>
+  <div class="statistic-chart-container">
+    <h2 class="statistic-chart-title">Average value of points</h2>
+    <canvas baseChart [data]="averagePointsData" [type]="pieChartType">
+    </canvas>
+  </div>
+  <div class="statistic-chart-container">
+    <h2 class="statistic-chart-title">Average time of answering</h2>
+    <canvas baseChart [data]="averageTimeData" [type]="pieChartType">
+    </canvas>
+  </div>
+</div>

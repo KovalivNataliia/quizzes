@@ -24,7 +24,8 @@
       [disabled]="!(isAuth$ | async)">
       Create quiz
     </button>
-    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary" [disabled]="!(isAuth$ | async)">
+    <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary" (click)="showStatistic()"
+      [disabled]="!(isAuth$ | async)">
       See statistic
     </button>
   </div>

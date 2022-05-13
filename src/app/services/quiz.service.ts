@@ -9,6 +9,7 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 import { QUIZZES } from '@shared/quizzes-data';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
+import { StatisticService } from '@services/statistic.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,7 @@ export class QuizService {
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
 
-  constructor(private http: HttpClient) { 
-    this.getUserTimesPlayedData();
-  }
+  constructor(private http: HttpClient, private statisticService: StatisticService) { }
 
   public getQuizzes(): QuizData[] {
     return this._quizzes;
@@ -34,6 +33,7 @@ export class QuizService {
 
   public resetQuizzes(): void {
     this._quizzes = QUIZZES;
+    this._userQuizzes = [];
   }
 
   public getState(): BehaviorSubject<QuizState> {
@@ -92,11 +92,14 @@ export class QuizService {
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
+    const quizName = this._getQuizName(state.currentQuiz);
+    const quizResult = { correctAnswersCount, pointsCount, quizTimeCount }
+    this.statisticService.saveStatistic(quizName, quizResult);
     this._changeTimesPlayedData(state.currentQuiz);
     this._setPartialState({
       isQuizDataSaved: true
     });
-    return { correctAnswersCount, pointsCount, quizTimeCount };
+    return quizResult;
   }
 
   public shuffleAnswers(quizData: QuizItem[]): string[][] {
@@ -162,8 +165,11 @@ export class QuizService {
   }
 
   public getUserQuizzes(): void {
-    this._userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
-    this._quizzes = [...this._quizzes, ...this._userQuizzes];
+    const userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
+    if (this._userQuizzes.length !== userQuizzes.length) {
+      this._userQuizzes = userQuizzes;
+      this._quizzes = [...this._quizzes, ...userQuizzes];
+    }
   }
 
   public getUserTimesPlayedData(): void {
@@ -201,6 +207,13 @@ export class QuizService {
         this._saveUserTimesPlayedData();
       }
     });
+  }
+
+  private _getQuizName(quiz: QuizItem[]): string {
+    const currentQuiz = this._quizzes.filter(quizData => {
+      return quizData.quiz.every(el => quiz.includes(el));
+    })[0];
+    return currentQuiz ? currentQuiz.quizName : 'Random quiz';
   }
 
 }

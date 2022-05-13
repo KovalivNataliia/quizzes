@@ -1,24 +1,37 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuizService } from '@services/quiz.service';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 import { Subscription } from 'rxjs';
-
+import { AuthorizationService } from '@services/authorization.service';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnDestroy {
+export class HomePageComponent implements OnInit, OnDestroy {
 
-  public quizzes = this.quizService.getQuizzes();
+  public quizzes!: QuizData[];
   public noResults = false;
   public searchMode = false;
   private _subscriptions = new Subscription();
+  private _isAuth$ = this.authService.isAuth$;
 
-  constructor(private quizService: QuizService, private router: Router) { }
+  constructor(
+    private quizService: QuizService,
+    private router: Router,
+    private authService: AuthorizationService
+  ) { }
+
+  ngOnInit(): void {
+    if (this._isAuth$.value) {
+      this.quizService.getUserQuizzes();
+    }
+    this.quizzes = this.quizService.getQuizzes();
+    this.quizService.getUserTimesPlayedData();
+  }
 
   public playRandomQuiz(): void {
     this._subscriptions.add(
