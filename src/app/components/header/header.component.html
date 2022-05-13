@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
-  <img [src]="'logo.svg' | imagePath" alt="logo" class="logo">
+<mat-toolbar color="primary" class="header">
+  <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()">
   <span class="header-title">Quizzes</span>
 </mat-toolbar>

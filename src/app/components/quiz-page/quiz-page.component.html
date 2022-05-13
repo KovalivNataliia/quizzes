@@ -3,27 +3,30 @@
     Leave quiz
   </button>
   <h2 class="quiz-questions-count">
-    Question: {{ currentQuestionIndex$ | async }} / {{ questionCount$ | async }}
+    Question: {{ (currentQuestionIndex$ | async)! + 1 }} / {{ questionCount$ | async }}
   </h2>
   <p class="quiz-question">{{ (currentQuestion$ | async) | decodeHTML }}</p>
   <div class="quiz-radio-btn-container">
-    <mat-radio-button class="quiz-radio-btn" *ngFor="let answer of currentAnswers$ | async" (change)="setAnswer(answer)"
-      [checked]="isAlreadyChecked(answer)">
+    <mat-radio-button class="quiz-radio-btn" *ngFor="let answer of currentAnswers$ | async"
+      (change)="setAnswer(answer)" [checked]="userAnswers[(currentQuestionIndex$ | async)!] === answer">
       {{ answer | decodeHTML }}
     </mat-radio-button>
   </div>
   <mat-card-actions class="quiz-btn-container">
-    <button class="quiz-prev-btn quiz-btn" mat-raised-button color="warn" (click)="previousQuestion()"
-      [disabled]="isFirstQuestion()">
+    <button class="quiz-btn" mat-raised-button color="warn" (click)="previousQuestion()"
+      [disabled]="!(currentQuestionIndex$ | async)">
       Previous
     </button>
-    <button *ngIf="!isLastQuestion()" class="quiz-next-btn quiz-btn" mat-raised-button (click)="nextQuestion()"
-      [disabled]="isAlreadyChecked()">
+    <button *ngIf="((currentQuestionIndex$ | async)! + 1) !== (questionCount$ | async); else showResultsBtn"
+      class="quiz-btn" mat-raised-button (click)="nextQuestion()"
+      [disabled]="!userAnswers[(currentQuestionIndex$ | async)!]">
       Next
     </button>
-    <button *ngIf="isLastQuestion()" class="quiz-result-btn quiz-btn" mat-raised-button color="primary"
-      (click)="showResults()" [disabled]="isAlreadyChecked()">
+    <ng-template #showResultsBtn>
+      <button class="quiz-btn" mat-raised-button color="primary"
+      (click)="showResults()" [disabled]="!userAnswers[(currentQuestionIndex$ | async)!]">
       Show results
     </button>
+    </ng-template>
   </mat-card-actions>
 </mat-card>

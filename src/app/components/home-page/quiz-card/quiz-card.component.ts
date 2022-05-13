@@ -10,8 +10,13 @@ export class QuizCardComponent {
 
   @Input() quizData!: QuizData;
   @Output() emitPlayQuiz: EventEmitter<QuizData> = new EventEmitter();
+  @Output() emitRemoveQuiz: EventEmitter<{quizId: number}> = new EventEmitter();
 
-  playQuiz(quizData: QuizData): void {
+  public playQuiz(quizData: QuizData): void {
     this.emitPlayQuiz.emit(quizData);
+  }
+
+  public removeQuiz(quizId: number): void {
+    this.emitRemoveQuiz.emit({quizId});
   }
 }

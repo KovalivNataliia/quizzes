@@ -22,3 +22,13 @@
     }
   }
 }
+
+.mat-card:not([class*=mat-elevation-z0]) {
+  transition: 0.7s;
+}
+
+.mat-card:not([class*=mat-elevation-z0]):hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 15px 1px rgb(0 0 0 / 20%);
+  background-color: #edf3fd;
+}
