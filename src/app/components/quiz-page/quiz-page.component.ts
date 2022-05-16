@@ -52,6 +52,17 @@ export class QuizPageComponent implements OnDestroy {
   }
 
   public showResults(): void {
+    const state = this.quizService.getStateValue();
+    const quizId = state.currentQuizId;
+    if (quizId) {
+      this._subscriptions.add(
+        this.quizService.updateQuiz(quizId).subscribe(data => {
+          if (data.message === 'Success') {
+            this.quizService.changeTimesPlayedData(quizId);
+          }
+        })
+      );
+    }
     const quizResult = this.quizService.getQuizResult(this.userAnswers);
     this._subscriptions.add(
       this.dialogService.openResultDialog(quizResult).subscribe(

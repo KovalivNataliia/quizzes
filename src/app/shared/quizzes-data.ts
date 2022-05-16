@@ -2,7 +2,7 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 
 export const QUIZZES: QuizData[] = [
   {
-    id: 1,
+    _id: '1',
     quizName: 'General Knowledge',
     pointsPerQuestion: 30,
     timesPlayed: 0,
@@ -239,7 +239,7 @@ export const QUIZZES: QuizData[] = [
     ]
   },
   {
-    id: 2,
+    _id: '2',
     quizName: 'Animals',
     pointsPerQuestion: 50,
     timesPlayed: 0,
@@ -420,7 +420,7 @@ export const QUIZZES: QuizData[] = [
     ]
   },
   {
-    id: 3,
+    _id: '3',
     quizName: 'Sports',
     pointsPerQuestion: 70,
     timesPlayed: 0,
@@ -669,7 +669,7 @@ export const QUIZZES: QuizData[] = [
     ]
   },
   {
-    id: 4,
+    _id: '4',
     quizName: 'Entertainment: Video Games',
     pointsPerQuestion: 30,
     timesPlayed: 0,
@@ -852,7 +852,7 @@ export const QUIZZES: QuizData[] = [
     ]
   },
   {
-    id: 5,
+    _id: '5',
     quizName: 'Entertainment: Musicals & Theatres',
     pointsPerQuestion: 50,
     timesPlayed: 0,
@@ -981,7 +981,7 @@ export const QUIZZES: QuizData[] = [
     ]
   },
   {
-    id: 6,
+    _id: '6',
     quizName: 'Science: Mathematics',
     pointsPerQuestion: 70,
     timesPlayed: 0,

@@ -17,8 +17,8 @@ const userSchema = new Schema({
 
 const User = module.exports = model('User', userSchema);
 
-module.exports.getUserByEmail = (email) => {
+module.exports.getUserByEmail = email => {
   return User.findOne({ email });
 };
 
-module.exports.addUser = (user) => user.save();
+module.exports.addUser = user => user.save();

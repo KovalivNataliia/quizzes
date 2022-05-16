@@ -6,7 +6,7 @@
   <div class="quiz-card-btn-container">
     <button mat-raised-button color="primary" class="quiz-card-btn" (click)="playQuiz(quizData)">Play</button>
     <button *ngIf="quizData.createdByUser" mat-raised-button class="quiz-card-btn"
-      (click)="removeQuiz(quizData.id)">
+      (click)="removeQuiz(quizData._id)">
       Remove
     </button>
   </div>

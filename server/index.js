@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const config = require('./config/config');
 const authRoutes = require('./routes/auth');
+const quizzesRoutes = require('./routes/quizzes');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/quizzes', quizzesRoutes);
 
 mongoose.connect(config.db, {
   useUnifiedTopology: true,

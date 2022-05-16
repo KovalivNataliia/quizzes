@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '@services/authorization.service';
-import { QuizService } from '@services/quiz.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -25,8 +24,7 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthorizationService,
-    private quizService: QuizService
+    private authService: AuthorizationService
   ) {
     if (this.router.url === '/auth') {
       this.isRegistration = false;
@@ -52,10 +50,7 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
       this._subscriptions.add(
         this.authService.loginUser(this.form.value).subscribe(data => {
           if (data.message === 'Success') {
-            const { token, username } = data;
-            this.authService.storeUser(token, username);
-            this.quizService.getUserQuizzes();
-            this.quizService.getUserTimesPlayedData();
+            this.authService.storeUser(data);
             this.router.navigate(['/home']);
           }
         })

@@ -13,24 +13,34 @@ import { AuthorizationService } from '@services/authorization.service';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
 
-  public quizzes!: QuizData[];
+  public quizzes: QuizData[];
   public noResults = false;
   public searchMode = false;
   private _subscriptions = new Subscription();
   private _isAuth$ = this.authService.isAuth$;
+  private _userQuizzes: QuizData[] | null;
 
   constructor(
     private quizService: QuizService,
     private router: Router,
     private authService: AuthorizationService
-  ) { }
+  ) {
+    this.quizzes = this.quizService.getQuizzes();
+    this._userQuizzes = this.quizService.userQuizzes;
+  }
 
   ngOnInit(): void {
-    if (this._isAuth$.value) {
-      this.quizService.getUserQuizzes();
+    if (this._isAuth$.value && !this._userQuizzes) {
+      const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
+      this._subscriptions.add(
+        this.quizService.getUserQuizzes(userId).subscribe(data => {
+          this._userQuizzes = data.userQuizzes;
+          this.quizService.userQuizzes = this._userQuizzes || [];
+          this.quizzes = [...this.quizzes, ...this._userQuizzes!];
+          this.quizService.updateQuizzes(this.quizzes);
+        })
+      );
     }
-    this.quizzes = this.quizService.getQuizzes();
-    this.quizService.getUserTimesPlayedData();
   }
 
   public playRandomQuiz(): void {
@@ -57,6 +67,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.quizService.answers = this.quizService.shuffleAnswers(quiz);
     const stateData = {
       currentQuiz: quiz,
+      currentQuizId: quizData._id,
       currentAnswers: this.quizService.answers[0],
       currentQuestionIndex: 0,
       pointsPerQuestion: quizData.pointsPerQuestion,
@@ -84,19 +95,34 @@ export class HomePageComponent implements OnInit, OnDestroy {
       const { pointsPerQuestion } = event$;
       this._subscriptions.add(
         this.quizService.getQuiz(event$).subscribe(quiz => {
-          this.quizService.createQuiz(quiz, pointsPerQuestion);
-          this.quizzes = this.quizService.getQuizzes();
-          this.searchMode = false;
+          const quizData = {
+            quizName: quiz[0].category,
+            pointsPerQuestion: +pointsPerQuestion,
+            quiz
+          }
+          this.quizService.addQuiz(quizData).subscribe(data => {
+            if (data.message === 'Success') {
+              this.quizzes = [...this.quizzes, data.quiz];
+              this.quizService.updateQuizzes(this.quizzes);
+              this.searchMode = false;
+            }
+          });
         })
       );
     }
   }
 
-  public removeQuiz($event: { quizId: number }): void {
+  public removeQuiz($event: { quizId: string }): void {
     const { quizId } = $event;
-    this.quizService.removeQuiz(quizId);
-    this.quizzes = this.quizService.getQuizzes();
-    this.searchMode = false;
+    this._subscriptions.add(
+      this.quizService.removeQuiz(quizId).subscribe(data => {
+        if (data.message === 'Success') {
+          this.quizzes = this.quizzes.filter(quiz => quiz._id !== quizId);
+          this.quizService.updateQuizzes(this.quizzes);
+          this.searchMode = false;
+        }
+      })
+    );
   }
 
   public goBack(): void {

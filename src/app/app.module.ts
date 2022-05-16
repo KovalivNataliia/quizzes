@@ -24,6 +24,7 @@ import { StatisticService } from '@services/statistic.service';
 import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 import { ServerErrorInterceptor } from '@interceptors/http-error.interceptor';
 import { SpinnerInterceptor } from '@interceptors/spinner.interceptor';
+import { TokenInterceptor } from '@interceptors/token-interceptor';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,11 @@ import { SpinnerInterceptor } from '@interceptors/spinner.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SpinnerInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
       multi: true,
     },
   ],

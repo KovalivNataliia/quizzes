@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { QuizState } from '@shared/interfaces/quizState.interface';
 import { QuizItem } from '@shared/interfaces/quizItem.interface';
@@ -17,13 +17,14 @@ import { StatisticService } from '@services/statistic.service';
 export class QuizService {
 
   public answers!: string[][];
+  public userQuizzes!: QuizData[] | null;
   private _state$!: BehaviorSubject<QuizState>;
   private _quizzes = QUIZZES;
-  private _userQuizzes: QuizData[] = [];
-  private _userTimesPlayedData!: { [key: string]: number };
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
+  private _url = 'http://localhost:8080/api/quizzes/';
+  private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private statisticService: StatisticService) { }
 
@@ -33,7 +34,11 @@ export class QuizService {
 
   public resetQuizzes(): void {
     this._quizzes = QUIZZES;
-    this._userQuizzes = [];
+    this.userQuizzes = null;
+  }
+
+  public updateQuizzes(quizzes: QuizData[]): void {
+    this._quizzes = quizzes;
   }
 
   public getState(): BehaviorSubject<QuizState> {
@@ -59,11 +64,39 @@ export class QuizService {
   }
 
   public getQuizCategories(): Observable<QuizCategory[]> {
-    return this.http.get(this._quizCategoriesUrl).pipe(map((response: any) => response.trivia_categories));
+    return this.http.get(this._quizCategoriesUrl).pipe(
+      map((response: any) => response.trivia_categories)
+    );
   }
 
   public getQuestionCount(id: string): Observable<{ [key: string]: number }> {
-    return this.http.get(this._questionCountUrl + id).pipe(map((response: any) => response.category_question_count));
+    return this.http.get(this._questionCountUrl + id).pipe(
+      map((response: any) => response.category_question_count)
+    );
+  }
+
+  public addQuiz(quizData: Partial<QuizData>): Observable<any> {
+    return this.http.post(this._url, quizData, { headers: this._headers }).pipe(
+      map((response: any) => response)
+    );
+  }
+
+  public getUserQuizzes(userId: string): Observable<any> {
+    return this.http.get(this._url + userId, { headers: this._headers }).pipe(
+      map((response: any) => response)
+    );
+  }
+
+  public updateQuiz(quizId: string): Observable<any> {
+    return this.http.patch(this._url + quizId, { headers: this._headers }).pipe(
+      map((response: any) => response)
+    );
+  }
+
+  public removeQuiz(quizId: string): Observable<any> {
+    return this.http.delete(this._url + quizId, { headers: this._headers }).pipe(
+      map((response: any) => response)
+    );
   }
 
   public nextQuestion(): void {
@@ -92,10 +125,9 @@ export class QuizService {
     const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
     const pointsCount = correctAnswersCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
-    const quizName = this._getQuizName(state.currentQuiz);
+    const quizName = this._getQuizName(state.currentQuizId);
     const quizResult = { correctAnswersCount, pointsCount, quizTimeCount }
     this.statisticService.saveStatistic(quizName, quizResult);
-    this._changeTimesPlayedData(state.currentQuiz);
     this._setPartialState({
       isQuizDataSaved: true
     });
@@ -139,50 +171,9 @@ export class QuizService {
     }
   }
 
-  public createQuiz(quiz: QuizItem[], pointsPerQuestion: string): void {
-    const lastQuiz = this._quizzes[this._quizzes.length - 1];
-    const quizData = {
-      id: lastQuiz.id + 1,
-      quizName: quiz[0].category,
-      pointsPerQuestion: +pointsPerQuestion,
-      timesPlayed: 0,
-      createdByUser: true,
-      quiz
-    }
-    this._userQuizzes = [...this._userQuizzes, quizData]
-    this._saveUserQuizzes();
-    this._quizzes = [...this._quizzes, quizData];
-  }
-
-  public removeQuiz(quizId: number): void {
-    this._userQuizzes = this._userQuizzes.filter(quiz => quiz.id !== quizId);
-    this._quizzes = this._quizzes.filter(quiz => quiz.id !== quizId);
-    this._saveUserQuizzes();
-    if (this._userTimesPlayedData[quizId]) {
-      delete this._userTimesPlayedData[quizId];
-      this._saveUserTimesPlayedData();
-    }
-  }
-
-  public getUserQuizzes(): void {
-    const userQuizzes = JSON.parse(localStorage.getItem('userQuizzes')!) || [];
-    if (this._userQuizzes.length !== userQuizzes.length) {
-      this._userQuizzes = userQuizzes;
-      this._quizzes = [...this._quizzes, ...userQuizzes];
-    }
-  }
-
-  public getUserTimesPlayedData(): void {
-    this._userTimesPlayedData = JSON.parse(localStorage.getItem('userTimesPlayedData')!) || {};
-    this._quizzes.map(quiz => quiz.timesPlayed = this._userTimesPlayedData[quiz.id] || 0);
-  }
-
-  private _saveUserQuizzes(): void {
-    localStorage.setItem('userQuizzes', JSON.stringify(this._userQuizzes));
-  }
-
-  private _saveUserTimesPlayedData(): void {
-    localStorage.setItem('userTimesPlayedData', JSON.stringify(this._userTimesPlayedData));
+  public changeTimesPlayedData(quizId: string): void {
+    const currentQuiz = this._quizzes.find(quizData => quizData._id === quizId);
+    currentQuiz!.timesPlayed++
   }
 
   private _setPartialState(partialState: Partial<QuizState>): void {
@@ -199,20 +190,8 @@ export class QuizService {
     return correctAnswersCount;
   }
 
-  private _changeTimesPlayedData(quiz: QuizItem[]): void {
-    this._quizzes.map(quizData => {
-      if (quizData.quiz.every(el => quiz.includes(el))) {
-        quizData.timesPlayed++;
-        this._userTimesPlayedData[quizData.id] = quizData.timesPlayed;
-        this._saveUserTimesPlayedData();
-      }
-    });
-  }
-
-  private _getQuizName(quiz: QuizItem[]): string {
-    const currentQuiz = this._quizzes.filter(quizData => {
-      return quizData.quiz.every(el => quiz.includes(el));
-    })[0];
+  private _getQuizName(quizId: string | undefined): string {
+    const currentQuiz = this._quizzes.find(quizData => quizData._id === quizId);
     return currentQuiz ? currentQuiz.quizName : 'Random quiz';
   }
 
