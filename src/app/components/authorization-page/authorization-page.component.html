@@ -4,13 +4,13 @@
     <mat-form-field *ngIf="isRegistration">
       <input matInput placeholder="Username" formControlName="username" name="username">
       <mat-error>
-        Please enter your username
+        Username must contain minimum of 8 and maximum of 20 characters
       </mat-error>
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Email" formControlName="email" name="email">
       <mat-error>
-        Please enter your email
+        Email is not valid
       </mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -21,7 +21,8 @@
         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
       <mat-error>
-        Please enter your password
+        Password must contain minimum of 8 characters, at least 1 uppercase and 1 lowercase letter, 1 number, and 1
+        special character
       </mat-error>
     </mat-form-field>
     <mat-form-field *ngIf="isRegistration">

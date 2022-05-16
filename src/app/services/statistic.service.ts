@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { QuizResult } from "@shared/interfaces/quizResult.interface";
+import { StatisticTableData } from "@shared/interfaces/statisticTableData.interface";
 import { UserStatisticData } from "@shared/interfaces/userStatisticData.interface";
 import { ChartData } from "chart.js";
 
@@ -52,6 +53,14 @@ export class StatisticService {
     return this._getChartData(chartData);
   }
 
+  public getStatisticTableData(): StatisticTableData[] {
+    const statistic = this.getStatistic();
+    const statisticTableData = [];
+    for (let key in statistic) {
+      statisticTableData.push({quizType: key, ...statistic[key]})
+    }
+    return statisticTableData;
+  }
 
   private _getChartData(chartData: number[]): ChartData<'pie'> {
     const quizzesTypes = this._getQuzzesTypes();

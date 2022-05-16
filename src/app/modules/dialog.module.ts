@@ -8,14 +8,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ResultDialogComponent } from '@components/dialogs/result-dialog/result-dialog.component';
 import { LeaveQuizDialogComponent } from '@components/dialogs/leave-quiz-dialog/leave-quiz-dialog.component';
-import { convertMillisecondsPipe } from '@pipes/convertMilliseconds.pipe';
 import { CreateQuizDialogComponent } from '@components/dialogs/create-quiz-dialog/create-quiz-dialog.component';
+import { ConvertMillisecondsPipeModule } from '@modules/convert-milliseconds-pipe.module';
 
 @NgModule({
   declarations: [
     ResultDialogComponent,
     LeaveQuizDialogComponent,
-    convertMillisecondsPipe,
     CreateQuizDialogComponent
   ],
   imports: [
@@ -25,7 +24,8 @@ import { CreateQuizDialogComponent } from '@components/dialogs/create-quiz-dialo
     MatButtonModule,
     MatIconModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    ConvertMillisecondsPipeModule
   ],
   exports: [
     ResultDialogComponent,

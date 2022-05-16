@@ -19,6 +19,8 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   public buttonText = 'Register';
   public form!: FormGroup;
   private _subscriptions = new Subscription();
+  private _emailPattern = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$';
+  private _passwordPattern = '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*?[#?!@$%^&*-]).{8,}$';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,18 +70,18 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private _buildForm() {
+  private _buildForm(): void {
     if (this.isRegistration) {
       this.form = this.formBuilder.group({
-        username: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
+        username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+        email: ['', [Validators.required, Validators.pattern(this._emailPattern)]],
+        password: ['', [Validators.required, Validators.pattern(this._passwordPattern)]],
         repeatPassword: [''],
       }, { validators: this._checkPasswords });
     } else {
       this.form = this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]]
+        email: ['', [Validators.required, Validators.pattern(this._emailPattern)]],
+        password: ['', [Validators.required, Validators.pattern(this._passwordPattern)]]
       });
     }
   }

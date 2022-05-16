@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'convertMilliseconds'
 })
-export class convertMillisecondsPipe implements PipeTransform {
+export class ConvertMillisecondsPipe implements PipeTransform {
 
   transform(milliseconds: number): string {
     const padToTwoDigits = (number: number): string => {

@@ -1,11 +1,39 @@
 .container {
-  flex-direction: row;
-  flex-wrap: wrap;
-  .statistic-chart-container {
-    min-width: 500px;
-    margin-bottom: 50px;
-    .statistic-chart-title {
-      font-size: 30px;
+  max-width: 1000px;
+  .statistic-toggle-btn {
+    width: 180px;
+    height: 60px;
+    margin-bottom: 30px;
+    font-size: 18px;
+  }
+  .statistic-charts-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .statistic-chart-container {
+      min-width: 500px;
+      margin-bottom: 100px;
+      .statistic-chart-title {
+        font-size: 30px;
+      }
     }
   }
+  .statistic-table {
+    width: 100%;
+    margin-bottom: 50px;
+    th.mat-header-cell:last-of-type,
+    td.mat-cell:last-of-type,
+    td.mat-footer-cell:last-of-type {
+      padding: 0;
+    }
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+      padding-left: 50px;
+    }
+  }
+}
+
+.unset-text-align {
+  text-align: unset;
 }
