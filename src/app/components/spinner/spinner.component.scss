@@ -5,7 +5,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(240, 240, 240, 0.8);
+  background-color: var(--spinner-background-color);
   z-index: 1;
   .spinner {
     position: absolute;

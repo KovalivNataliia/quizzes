@@ -18,22 +18,18 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   public buttonText = 'Register';
   public form!: FormGroup;
   private _subscriptions = new Subscription();
-  private _emailPattern = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$';
+  private _usernamePattern = '[a-zA-Z]{8,20}';
+  private _emailPattern = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$';
   private _passwordPattern = '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*?[#?!@$%^&*-]).{8,}$';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthorizationService
-  ) {
-    if (this.router.url === '/authorization') {
-      this.isRegistration = false;
-      this.title = 'Log In';
-      this.buttonText = 'Login';
-    }
-  }
+  ) { }
 
   ngOnInit(): void {
+    this._buildPage();
     this._buildForm();
   }
 
@@ -68,7 +64,7 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   private _buildForm(): void {
     if (this.isRegistration) {
       this.form = this.formBuilder.group({
-        username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+        username: ['', [Validators.required, Validators.pattern(this._usernamePattern)]],
         email: ['', [Validators.required, Validators.pattern(this._emailPattern)]],
         password: ['', [Validators.required, Validators.pattern(this._passwordPattern)]],
         repeatPassword: [''],
@@ -78,6 +74,14 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
         email: ['', [Validators.required, Validators.pattern(this._emailPattern)]],
         password: ['', [Validators.required, Validators.pattern(this._passwordPattern)]]
       });
+    }
+  }
+
+  private _buildPage(): void {
+    if (this.router.url === '/authorization') {
+      this.isRegistration = false;
+      this.title = 'Log In';
+      this.buttonText = 'Login';
     }
   }
 

@@ -1,4 +1,5 @@
 import { Directive, HostListener, HostBinding, Input } from '@angular/core';
+import { StyleVariables } from '@shared/style-variables';
 
 @Directive({
   selector: '[hoverEffect]'
@@ -7,9 +8,9 @@ export class HoverEffectDirective {
 
   @Input() createdByUser!: boolean;
 
-  private _hoverBoxShadow = '1px 1px 15px 1px rgb(0 0 0 / 20%)';
-  private _hoverBackgroundColor = '#edf3fd';
-  private _userHoverBackgroundColor = '#fde7ef';
+  private _hoverBoxShadow = StyleVariables['--hover-box-shadow'];
+  private _hoverBackgroundColor = StyleVariables['--hover-background-color'];
+  private _userHoverBackgroundColor = StyleVariables['--user-hover-background-color'];
 
   @HostBinding("style.boxShadow") boxShadow!: string;
 

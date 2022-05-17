@@ -9,6 +9,7 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 import { StatisticService } from '@services/statistic.service';
+import { QuizResData } from '@shared/interfaces/quizResData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -74,31 +75,31 @@ export class QuizService {
     );
   }
 
-  public getDefaultQuizzes(): Observable<any> {
+  public getDefaultQuizzes(): Observable<QuizResData> {
     return this.http.get(this._url, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
 
-  public getUserQuizzes(userId: string): Observable<any> {
+  public getUserQuizzes(userId: string): Observable<QuizResData> {
     return this.http.get(this._url + userId, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
 
-  public addQuiz(quizData: Partial<QuizData>): Observable<any> {
+  public addQuiz(quizData: Partial<QuizData>): Observable<QuizResData> {
     return this.http.post(this._url, quizData, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
 
-  public updateQuiz(quizId: string): Observable<any> {
+  public updateQuiz(quizId: string): Observable<QuizResData> {
     return this.http.patch(this._url + quizId, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
 
-  public removeQuiz(quizId: string): Observable<any> {
+  public removeQuiz(quizId: string): Observable<QuizResData> {
     return this.http.delete(this._url + quizId, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
