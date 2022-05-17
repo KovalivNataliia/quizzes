@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { UserData } from "@shared/interfaces/userData.interface";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { QuizService } from "@services/quiz.service";
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,16 @@ export class AuthorizationService {
   public username$ = new BehaviorSubject<string>('');
   private _url = 'http://localhost:8080/api/auth/';
   private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private _jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient, private quizService: QuizService) {
     const user = JSON.parse(sessionStorage.getItem('user')!);
     if (user) {
-      this.isAuth$.next(true);
-      this.username$.next(user.username);
+      const isTokenExpired = this._jwtHelper.isTokenExpired(user.token);
+      if (!isTokenExpired) {
+        this.isAuth$.next(true);
+        this.username$.next(user.username);
+      }
     }
   }
 

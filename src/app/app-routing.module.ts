@@ -5,6 +5,7 @@ import { QuizPageComponent } from '@components/quiz-page/quiz-page.component';
 import { AuthorizationPageComponent } from '@components/authorization-page/authorization-page.component';
 import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 import { StatisticPageComponent } from '@components/statistic-page/statistic-page.component';
+import { AuthorizationGuard } from '@guards/authorization.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'quiz', component: QuizPageComponent, canDeactivate: [LeaveQuizGuard] },
   { path: 'registration', component: AuthorizationPageComponent },
   { path: 'auth', component: AuthorizationPageComponent },
-  { path: 'statistic', component: StatisticPageComponent },
+  { path: 'statistic', component: StatisticPageComponent, canActivate: [AuthorizationGuard] },
 ];
 
 @NgModule({
