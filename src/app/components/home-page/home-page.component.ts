@@ -18,7 +18,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public searchMode = false;
   private _subscriptions = new Subscription();
   private _isAuth$ = this.authService.isAuth$;
-  private _userQuizzes: QuizData[] | null;
 
   constructor(
     private quizService: QuizService,
@@ -26,18 +25,22 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private authService: AuthorizationService
   ) {
     this.quizzes = this.quizService.getQuizzes();
-    this._userQuizzes = this.quizService.userQuizzes;
   }
 
   ngOnInit(): void {
-    if (this._isAuth$.value && !this._userQuizzes) {
-      const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
+    if (!this.quizzes.length || this._isAuth$.value && !this.quizService.userQuizzes) {
       this._subscriptions.add(
-        this.quizService.getUserQuizzes(userId).subscribe(data => {
-          this._userQuizzes = data.userQuizzes;
-          this.quizService.userQuizzes = this._userQuizzes || [];
-          this.quizzes = [...this.quizzes, ...this._userQuizzes!];
+        this.quizService.getDefaultQuizzes().subscribe(data => {
+          this.quizzes = data.quizzes;
           this.quizService.updateQuizzes(this.quizzes);
+          if (this._isAuth$.value && !this.quizService.userQuizzes) {
+            const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
+            this.quizService.getUserQuizzes(userId).subscribe(data => {
+              this.quizService.userQuizzes = data.userQuizzes;
+              this.quizzes = [...this.quizzes, ...data.userQuizzes];
+              this.quizService.updateQuizzes(this.quizzes);
+            })
+          }
         })
       );
     }

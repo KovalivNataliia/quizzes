@@ -7,7 +7,6 @@ import { QuizItem } from '@shared/interfaces/quizItem.interface';
 import { QuizResult } from '@shared/interfaces/quizResult.interface';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
-import { QUIZZES } from '@shared/quizzes-data';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 import { StatisticService } from '@services/statistic.service';
 
@@ -19,7 +18,7 @@ export class QuizService {
   public answers!: string[][];
   public userQuizzes!: QuizData[] | null;
   private _state$!: BehaviorSubject<QuizState>;
-  private _quizzes = QUIZZES;
+  private _quizzes: QuizData[] = [];
   private _randomQuizUrl: string = 'https://opentdb.com/api.php?amount=10';
   private _quizCategoriesUrl: string = 'https://opentdb.com/api_category.php';
   private _questionCountUrl: string = 'https://opentdb.com/api_count.php?category=';
@@ -33,7 +32,7 @@ export class QuizService {
   }
 
   public resetQuizzes(): void {
-    this._quizzes = QUIZZES;
+    this._quizzes = [];
     this.userQuizzes = null;
   }
 
@@ -75,14 +74,20 @@ export class QuizService {
     );
   }
 
-  public addQuiz(quizData: Partial<QuizData>): Observable<any> {
-    return this.http.post(this._url, quizData, { headers: this._headers }).pipe(
+  public getDefaultQuizzes(): Observable<any> {
+    return this.http.get(this._url, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
 
   public getUserQuizzes(userId: string): Observable<any> {
     return this.http.get(this._url + userId, { headers: this._headers }).pipe(
+      map((response: any) => response)
+    );
+  }
+
+  public addQuiz(quizData: Partial<QuizData>): Observable<any> {
+    return this.http.post(this._url, quizData, { headers: this._headers }).pipe(
       map((response: any) => response)
     );
   }
