@@ -26,7 +26,7 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthorizationService
   ) {
-    if (this.router.url === '/auth') {
+    if (this.router.url === '/authorization') {
       this.isRegistration = false;
       this.title = 'Log In';
       this.buttonText = 'Login';
@@ -42,7 +42,7 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
       this._subscriptions.add(
         this.authService.registerUser(this.form.value).subscribe(data => {
           if (data.message === 'Success') {
-            this.router.navigate(['/auth']);
+            this.router.navigate(['/authorization']);
           }
         })
       );

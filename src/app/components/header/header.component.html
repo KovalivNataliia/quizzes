@@ -1,11 +1,11 @@
 <mat-toolbar color="primary" class="header">
   <div class="header-content">
-    <div class="header-logo-container" (click)="toTop()" routerLink="/home">
+    <div class="header-logo-container" routerLink="/home">
       <img [src]="'logo.svg' | imagePath" alt="logo">
       <span class="header-title">Quizzes</span>
     </div>
-    <span class="header-spacer"></span>
-    <ng-container *ngIf="currentUrl !== '/quiz'">
+    <div class="header-current-page" (click)="toTop()">{{ currentUrl | titlecase }} page</div>
+    <ng-container *ngIf="currentUrl !== 'quiz'">
       <ng-container *ngIf="isAuth$ | async; else authBtns">
         <h2 class="header-username">{{ userName$ | async}}</h2>
         <button mat-raised-button (click)="logOut()">
@@ -13,7 +13,7 @@
         </button>
       </ng-container>
       <ng-template #authBtns>
-        <button mat-raised-button class="header-login-btn" routerLink="/auth">
+        <button mat-raised-button class="header-login-btn" routerLink="/authorization">
           Log In
         </button>
         <button mat-raised-button class="header-reg-btn" routerLink="/registration">

@@ -21,7 +21,7 @@ export class HeaderComponent {
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.currentUrl = event.url;
+        this.currentUrl = event.url.slice(1);
       }
     });
   }
@@ -31,7 +31,7 @@ export class HeaderComponent {
   }
 
   public logOut(): void {
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/authorization']);
     this.authService.logoutUser();
   }
 

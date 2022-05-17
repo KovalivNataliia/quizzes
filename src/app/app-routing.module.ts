@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'quiz', component: QuizPageComponent, canDeactivate: [LeaveQuizGuard] },
   { path: 'registration', component: AuthorizationPageComponent },
-  { path: 'auth', component: AuthorizationPageComponent },
+  { path: 'authorization', component: AuthorizationPageComponent },
   { path: 'statistic', component: StatisticPageComponent, canActivate: [AuthorizationGuard] },
 ];
 

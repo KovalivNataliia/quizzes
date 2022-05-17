@@ -18,8 +18,13 @@
       margin-left: 10px;
       font-size: 35px;
     }
-    .header-spacer {
+    .header-current-page {
       flex: 1 1 auto;
+      margin-left: 50px;
+      font-size: 25px;
+      padding-top: 4px;
+      text-shadow: 0 0 3px #F10D58, 0 0 7px #4578D5;
+      cursor: pointer;
     }
     .header-username {
       margin-right: 20px;
