@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { QuizService } from '@services/quiz.service';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
 import { AuthorizationService } from '@services/authorization.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public searchMode = false;
   private _subscriptions = new Subscription();
   private _isAuth$ = this.authService.isAuth$;
+  private _quizData!: Partial<QuizData>;
 
   constructor(
     private quizService: QuizService,
@@ -97,19 +98,21 @@ export class HomePageComponent implements OnInit, OnDestroy {
     if (event$) {
       const { pointsPerQuestion } = event$;
       this._subscriptions.add(
-        this.quizService.getQuiz(event$).subscribe(quiz => {
-          const quizData = {
-            quizName: quiz[0].category,
-            pointsPerQuestion: +pointsPerQuestion,
-            quiz
-          }
-          this.quizService.addQuiz(quizData).subscribe(data => {
-            if (data.message === 'Success') {
-              this.quizzes = [...this.quizzes, data.quiz];
-              this.quizService.updateQuizzes(this.quizzes);
-              this.searchMode = false;
+        this.quizService.getQuiz(event$).pipe(
+          tap(quiz => {
+            this._quizData = {
+              quizName: quiz[0].category,
+              pointsPerQuestion: +pointsPerQuestion,
+              quiz
             }
-          });
+          }),
+          switchMap(() => this.quizService.addQuiz(this._quizData)),
+        ).subscribe(data => {
+          if (data.message === 'Success') {
+            this.quizzes = [...this.quizzes, data.quiz];
+            this.quizService.updateQuizzes(this.quizzes);
+            this.searchMode = false;
+          }
         })
       );
     }
