@@ -6,3 +6,9 @@
   --hover-background-color: #edf3fd;
   --user-hover-background-color: #fde7ef;
 }
+
+.style-variables {
+  color: var(--hover-background-color);
+  background-color: var(--user-hover-background-color);
+  box-shadow: var(--hover-box-shadow);
+}
