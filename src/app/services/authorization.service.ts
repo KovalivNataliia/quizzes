@@ -4,7 +4,7 @@ import { UserData } from "@shared/interfaces/userData.interface";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { QuizService } from "@services/quiz.service";
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserResData } from "@shared/interfaces/UserResData.interface";
+import { UserResData } from "@shared/interfaces/userResData.interface";
 
 @Injectable({
   providedIn: 'root'

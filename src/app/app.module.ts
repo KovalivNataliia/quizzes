@@ -21,6 +21,7 @@ import { ErrorHandlerService } from '@services/error-handler.service';
 import { SpinnerService } from '@services/spinner.service';
 import { AuthorizationService } from '@services/authorization.service';
 import { StatisticService } from '@services/statistic.service';
+import { StyleService } from '@services/style.service';
 import { LeaveQuizGuard } from '@guards/leave-quiz.guard';
 import { AuthorizationGuard } from '@guards/authorization.guard';
 import { ServerErrorInterceptor } from '@interceptors/http-error.interceptor';
@@ -53,6 +54,7 @@ import { TokenInterceptor } from '@interceptors/token-interceptor';
     StatisticService,
     LeaveQuizGuard,
     AuthorizationGuard,
+    StyleService,
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: HTTP_INTERCEPTORS,
