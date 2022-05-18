@@ -11,7 +11,7 @@
   </div>
   <mat-form-field appearance="fill" class="sidebar-sort-field">
     <mat-label>Sort quizzes by</mat-label>
-    <mat-select [(value)]="selectedValue" (valueChange)="sortQuizzes()">
+    <mat-select [(value)]="selectedValue" (valueChange)="sortQuizzes()" [disabled]="searchMode">
       <mat-option>None</mat-option>
       <mat-option value="name">Name</mat-option>
       <mat-option value="points">Points per question</mat-option>
@@ -21,7 +21,7 @@
   </mat-form-field>
   <div class="sidebar-btn-container">
     <button class="sidebar-create-btn sidebar-btn" mat-stroked-button color="accent" (click)="createQuiz()"
-      [disabled]="!(isAuth$ | async)">
+      [disabled]="searchMode || selectedValue || !(isAuth$ | async)">
       Create quiz
     </button>
     <button class="sidebar-statistic-btn sidebar-btn" mat-stroked-button color="primary" (click)="showStatistic()"

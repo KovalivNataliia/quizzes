@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { AuthorizationService } from '@services/authorization.service';
 import { DialogService } from '@services/dialog.service';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
@@ -15,6 +15,8 @@ export class HomeSidebarComponent implements OnDestroy {
   @Output() emitSearchByQuizName: EventEmitter<{ text: string }> = new EventEmitter();
   @Output() emitSortQuizzes: EventEmitter<{ selectedValue: string }> = new EventEmitter();
   @Output() emitCreateQuiz: EventEmitter<CreateQuizData> = new EventEmitter();
+  @Input() public searchMode!: boolean;
+
   public text = '';
   public selectedValue = '';
   public isAuth$ = this.authService.isAuth$;
