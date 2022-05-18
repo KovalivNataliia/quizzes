@@ -1,4 +1,25 @@
 <mat-toolbar color="primary" class="header">
-  <img [src]="'logo.svg' | imagePath" alt="logo" class="header-logo" (click)="toTop()">
-  <span class="header-title">Quizzes</span>
+  <div class="header-content">
+    <div class="header-logo-container" routerLink="/home">
+      <img [src]="'logo.svg' | imagePath" alt="logo">
+      <span class="header-title">Quizzes</span>
+    </div>
+    <div class="header-current-page" (click)="toTop()">{{ currentUrl | titlecase }} page</div>
+    <ng-container *ngIf="currentUrl !== 'quiz'">
+      <ng-container *ngIf="isAuth$ | async; else authBtns">
+        <h2 class="header-username">{{ userName$ | async}}</h2>
+        <button mat-raised-button (click)="logOut()">
+          Log Out
+        </button>
+      </ng-container>
+      <ng-template #authBtns>
+        <button mat-raised-button class="header-login-btn" routerLink="/authorization">
+          Log In
+        </button>
+        <button mat-raised-button class="header-reg-btn" routerLink="/registration">
+          Register
+        </button>
+      </ng-template>
+    </ng-container>
+  </div>
 </mat-toolbar>

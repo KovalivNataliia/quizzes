@@ -5,19 +5,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { QuizPageComponent } from '@components/quiz-page/quiz-page.component';
-import { DecodeHtmlPipe } from '@pipes/decode-html.pipe';
+import { PipeModule } from '@modules/pipe.module';
 
 @NgModule({
   declarations: [
-    QuizPageComponent,
-    DecodeHtmlPipe
+    QuizPageComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatCardModule,
     MatRadioModule,
-    RouterModule
+    RouterModule,
+    PipeModule
   ],
   exports: [QuizPageComponent]
 })

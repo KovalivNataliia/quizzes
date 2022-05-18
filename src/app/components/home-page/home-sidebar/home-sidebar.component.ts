@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { AuthorizationService } from '@services/authorization.service';
 import { DialogService } from '@services/dialog.service';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-sidebar',
@@ -10,24 +12,29 @@ import { Subscription } from 'rxjs';
 })
 export class HomeSidebarComponent implements OnDestroy {
 
-  @Output() emitSearchByQuizName: EventEmitter<{text: string}> = new EventEmitter();
-  @Output() emitSortQuizzes: EventEmitter<{selectedValue: string}> = new EventEmitter();
+  @Output() emitSearchByQuizName: EventEmitter<{ text: string }> = new EventEmitter();
+  @Output() emitSortQuizzes: EventEmitter<{ selectedValue: string }> = new EventEmitter();
   @Output() emitCreateQuiz: EventEmitter<CreateQuizData> = new EventEmitter();
   public text = '';
   public selectedValue = '';
+  public isAuth$ = this.authService.isAuth$;
   private _subscriptions = new Subscription();
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private authService: AuthorizationService,
+    private router: Router
+  ) { }
 
   public searchByQuizName(): void {
-    const emitData = {text: this.text};
+    const emitData = { text: this.text };
     this.emitSearchByQuizName.emit(emitData);
     this.text = '';
     this.selectedValue = '';
   }
 
   public sortQuizzes(): void {
-    const emitData = {selectedValue: this.selectedValue};
+    const emitData = { selectedValue: this.selectedValue };
     this.emitSortQuizzes.emit(emitData);
   }
 
@@ -37,6 +44,10 @@ export class HomeSidebarComponent implements OnDestroy {
         this.emitCreateQuiz.emit(result);
       })
     );
+  }
+
+  public showStatistic(): void {
+    this.router.navigate(['/statistic']);
   }
 
   ngOnDestroy(): void {

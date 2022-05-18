@@ -9,7 +9,7 @@ export class ErrorHandlerService implements ErrorHandler {
 
   handleError(error: Error | HttpErrorResponse): void {
     this.zone.run(() => {
-      this.snackBar.open(error.message, 'Close', { duration: 5000 });
+      this.snackBar.open(error.message, 'Close', { duration: 5000, panelClass: ['snackbar'] });
     });
   }
 }

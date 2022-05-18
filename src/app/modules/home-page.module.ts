@@ -10,12 +10,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { HomePageComponent } from '@components/home-page/home-page.component';
 import { QuizCardComponent } from '@components/home-page/quiz-card/quiz-card.component';
 import { HomeSidebarComponent } from '@components/home-page/home-sidebar/home-sidebar.component';
+import { HoverEffectDirective } from '@directives/hover-effect.directive';
 
 @NgModule({
   declarations: [
     HomePageComponent,
     QuizCardComponent,
-    HomeSidebarComponent
+    HomeSidebarComponent,
+    HoverEffectDirective
   ],
   imports: [
     CommonModule,

@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '@components/header/header.component';
-import { ImagePathPipe } from '@pipes/image-path.pipe';
+import { PipeModule } from '@modules/pipe.module';
 
 @NgModule({
   declarations: [
-    HeaderComponent,
-    ImagePathPipe
+    HeaderComponent
   ],
   imports: [
     CommonModule,
-    MatToolbarModule
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    PipeModule
   ],
   exports: [HeaderComponent]
 })
