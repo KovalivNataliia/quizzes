@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ResultDialogComponent } from '@components/dialogs/result-dialog/result-dialog.component';
 import { LeaveQuizDialogComponent } from '@components/dialogs/leave-quiz-dialog/leave-quiz-dialog.component';
 import { CreateQuizDialogComponent } from '@components/dialogs/create-quiz-dialog/create-quiz-dialog.component';
-import { ConvertMillisecondsPipeModule } from '@modules/convert-milliseconds-pipe.module';
+import { PipeModule } from '@modules/pipe.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ConvertMillisecondsPipeModule } from '@modules/convert-milliseconds-pip
     MatIconModule,
     MatSelectModule,
     MatInputModule,
-    ConvertMillisecondsPipeModule
+    PipeModule
   ],
   exports: [
     ResultDialogComponent,

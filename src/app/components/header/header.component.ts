@@ -21,7 +21,7 @@ export class HeaderComponent {
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        this.currentUrl = event.url.slice(1);
+        this.currentUrl = event.url.slice(1) || 'home';
       }
     });
   }

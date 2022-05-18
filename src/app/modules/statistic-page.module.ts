@@ -5,7 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { StatisticPageComponent } from '@components/statistic-page/statistic-page.component';
-import { ConvertMillisecondsPipeModule } from '@modules/convert-milliseconds-pipe.module';
+import { PipeModule } from '@modules/pipe.module';
 
 @NgModule({
   declarations: [StatisticPageComponent],
@@ -15,7 +15,7 @@ import { ConvertMillisecondsPipeModule } from '@modules/convert-milliseconds-pip
     MatTableModule,
     MatSortModule,
     MatButtonModule,
-    ConvertMillisecondsPipeModule
+    PipeModule
   ],
   exports: [StatisticPageComponent]
 })
