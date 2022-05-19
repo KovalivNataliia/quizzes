@@ -37,28 +37,26 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.quizzes.length || this._isAuth$.value && !this.quizService.userQuizzes) {
-      this._subscriptions.add(
-        this.quizService.getDefaultQuizzes().subscribe(data => {
-          this.quizzes = data.quizzes;
-          this.quizService.updateQuizzes(this.quizzes);
-          if (this._isAuth$.value && !this.quizService.userQuizzes) {
-            const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
-            this.quizService.getUserQuizzes(userId).subscribe(data => {
-              this.quizService.userQuizzes = data.userQuizzes;
-              this.quizzes = [...this.quizzes, ...data.userQuizzes];
-              this.quizService.updateQuizzes(this.quizzes);
-            })
-          }
-        })
-      );
+      const sub = this.quizService.getDefaultQuizzes().subscribe(data => {
+        this.quizzes = data.quizzes;
+        this.quizService.updateQuizzes(this.quizzes);
+        if (this._isAuth$.value && !this.quizService.userQuizzes) {
+          const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
+          this.quizService.getUserQuizzes(userId).subscribe(data => {
+            this.quizService.userQuizzes = data.userQuizzes;
+            this.quizzes = [...this.quizzes, ...data.userQuizzes];
+            this.quizService.updateQuizzes(this.quizzes);
+          })
+        }
+      })
+      this._subscriptions.add(sub);
     }
     if (this._isAuth$.value && !this._userStatistic) {
-      this._subscriptions.add(
-        this.statisticService.getUserStatistic().subscribe(statistic => {
-          statistic = statistic || [];
-          this.statisticService.setStatistic(statistic);
-        })
-      );
+      const sub = this.statisticService.getUserStatistic().subscribe(statistic => {
+        statistic = statistic || [];
+        this.statisticService.setStatistic(statistic);
+      })
+      this._subscriptions.add(sub);
     }
   }
 
@@ -121,40 +119,38 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public createQuiz(event$: CreateQuizData): void {
     if (event$) {
       const { pointsPerQuestion } = event$;
-      this._subscriptions.add(
-        this.quizService.getQuiz(event$).pipe(
-          tap(quiz => {
-            this._quizData = {
-              quizName: quiz[0].category,
-              pointsPerQuestion: +pointsPerQuestion,
-              quiz
-            }
-          }),
-          switchMap(() => this.quizService.addQuiz(this._quizData)),
-        ).subscribe(data => {
-          if (data.message === 'Success') {
-            this.quizzes = [...this.quizzes, data.quiz];
-            this.quizService.updateQuizzes(this.quizzes);
+      const sub = this.quizService.getQuiz(event$).pipe(
+        tap(quiz => {
+          this._quizData = {
+            quizName: quiz[0].category,
+            pointsPerQuestion: +pointsPerQuestion,
+            quiz
           }
-        })
-      );
+        }),
+        switchMap(() => this.quizService.addQuiz(this._quizData)),
+      ).subscribe(data => {
+        if (data.message === 'Success') {
+          this.quizzes = [...this.quizzes, data.quiz];
+          this.quizService.updateQuizzes(this.quizzes);
+        }
+      })
+      this._subscriptions.add(sub);
     }
   }
 
   public removeQuiz($event: { quizId: string }): void {
     const { quizId } = $event;
-    this._subscriptions.add(
-      this.quizService.removeQuiz(quizId).subscribe(data => {
-        if (data.message === 'Success') {
-          this.quizzes = this.quizzes.filter(quiz => quiz._id !== quizId);
-          if (this.searchMode || this._sortValue) {
-            this._preservedQuizzes = this._preservedQuizzes.filter(quiz => quiz._id !== quizId);
-            this.quizService.updateQuizzes(this._preservedQuizzes);
-            this.noResults = !this.quizzes.length;
-          }
+    const sub = this.quizService.removeQuiz(quizId).subscribe(data => {
+      if (data.message === 'Success') {
+        this.quizzes = this.quizzes.filter(quiz => quiz._id !== quizId);
+        if (this.searchMode || this._sortValue) {
+          this._preservedQuizzes = this._preservedQuizzes.filter(quiz => quiz._id !== quizId);
+          this.quizService.updateQuizzes(this._preservedQuizzes);
+          this.noResults = !this.quizzes.length;
         }
-      })
-    );
+      }
+    })
+    this._subscriptions.add(sub);
   }
 
   public goBack(): void {

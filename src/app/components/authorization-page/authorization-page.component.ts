@@ -36,28 +36,26 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    let sub: Subscription;
     if (this.isRegistration) {
-      this._subscriptions.add(
-        this.authService.registerUser(this.form.value).subscribe(data => {
-          if (data.message === 'Success') {
-            this.router.navigate(['/authorization']);
-          }
-        })
-      );
+      sub = this.authService.registerUser(this.form.value).subscribe(data => {
+        if (data.message === 'Success') {
+          this.router.navigate(['/authorization']);
+        }
+      })
     } else {
-      this._subscriptions.add(
-        this.authService.loginUser(this.form.value).pipe(
-          tap(data => {
-            this.authService.storeUser(data);
-          }),
-          switchMap(() => this.statisticService.getUserStatistic()),
-        ).subscribe(statistic => {
-          statistic = statistic || [];
-          this.statisticService.setStatistic(statistic);
-          this.router.navigate(['/home']);
-        })
-      );
+      sub = this.authService.loginUser(this.form.value).pipe(
+        tap(data => {
+          this.authService.storeUser(data);
+        }),
+        switchMap(() => this.statisticService.getUserStatistic()),
+      ).subscribe(statistic => {
+        statistic = statistic || [];
+        this.statisticService.setStatistic(statistic);
+        this.router.navigate(['/home']);
+      })
     }
+    this._subscriptions.add(sub);
   }
 
   private _checkPasswords(control: AbstractControl): ValidationErrors | null {

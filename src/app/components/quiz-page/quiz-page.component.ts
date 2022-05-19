@@ -60,28 +60,25 @@ export class QuizPageComponent implements OnDestroy {
     const state = this.quizService.getStateValue();
     const quizId = state.currentQuizId;
     if (quizId) {
-      this._subscriptions.add(
-        this.quizService.updateQuiz(quizId).subscribe(data => {
-          if (data.message === 'Success') {
-            this.quizService.changeTimesPlayedData(quizId);
-          }
-        })
-      );
+      const sub = this.quizService.updateQuiz(quizId).subscribe(data => {
+        if (data.message === 'Success') {
+          this.quizService.changeTimesPlayedData(quizId);
+        }
+      })
+      this._subscriptions.add(sub);
     }
     const quizResult = this.quizService.getQuizResult(this.userAnswers);
-    this._subscriptions.add(
-      this.dialogService.openResultDialog(quizResult).subscribe(
-        () => this.router.navigate(['/home'])
-      )
-    );
+    const sub = this.dialogService.openResultDialog(quizResult).subscribe(
+      () => this.router.navigate(['/home'])
+    )
+    this._subscriptions.add(sub);
     if (this._isAuth$.value) {
       const quizType = this.quizService.getQuizType(quizId);
       const currentStatisticData = this.statisticService.getStatisticData(quizType, quizResult);
-      this._subscriptions.add(
-        this.statisticService.updateUserStatistic(currentStatisticData).subscribe(data => {
-          this.statisticService.updateCurrentStatisticData(data);
-        })
-      );
+      const sub = this.statisticService.updateUserStatistic(currentStatisticData).subscribe(data => {
+        this.statisticService.updateCurrentStatisticData(data);
+      })
+      this._subscriptions.add(sub);
     }
   }
 

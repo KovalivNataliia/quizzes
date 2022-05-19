@@ -35,10 +35,11 @@ export class StatisticPageComponent implements AfterViewInit {
   ngOnInit(): void {
     if (this._statisticData.length) {
       this.isStatisticDataExist = true;
-      this.quizzesPlayedData = this.statisticService.getStatisticChartData('quizzesPlayed');
-      this.correctAnswersData = this.statisticService.getStatisticChartData('correctAnswers');
-      this.averagePointsData = this.statisticService.getStatisticChartData('averagePoints');
-      this.averageTimeData = this.statisticService.getStatisticChartData('averageTime');
+      const getChartData = this.statisticService.getStatisticChartData.bind(this.statisticService);
+      this.quizzesPlayedData = getChartData('quizzesPlayed');
+      this.correctAnswersData = getChartData('correctAnswers');
+      this.averagePointsData = getChartData('averagePoints');
+      this.averageTimeData = getChartData('averageTime');
 
       this.displayedColumns = ['quizType', 'quizzesCount', 'questionsCount', 'pointsCount', 'quizTimeCount'];
       this.dataSource = new MatTableDataSource(this._statisticData);
