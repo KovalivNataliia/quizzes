@@ -3,7 +3,7 @@ import { StatisticService } from '@services/statistic.service';
 import { ChartData, ChartType } from 'chart.js';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { StatisticTableData } from '@shared/interfaces/statisticTableData.interface';
+import { StatisticData } from '@shared/interfaces/statisticData.interface';
 
 @Component({
   selector: 'app-statistic-page',
@@ -14,31 +14,43 @@ export class StatisticPageComponent implements AfterViewInit {
 
   public showStatisticTable = false;
   public toggleBtnText = 'Table';
+  public isStatisticDataExist = false;
 
-  public quizzesPlayedData: ChartData<'pie'>;
-  public correctAnswersData: ChartData<'pie'>;
-  public averagePointsData: ChartData<'pie'>;
-  public averageTimeData: ChartData<'pie'>;
+  public quizzesPlayedData!: ChartData<'pie'>;
+  public correctAnswersData!: ChartData<'pie'>;
+  public averagePointsData!: ChartData<'pie'>;
+  public averageTimeData!: ChartData<'pie'>;
   public pieChartType: ChartType = 'pie';
 
   @ViewChild(MatSort) sort!: MatSort;
-  public displayedColumns: string[];
-  public dataSource: MatTableDataSource<StatisticTableData>;
-  private _statisticTableData: StatisticTableData[];
+  public displayedColumns!: string[];
+  public dataSource!: MatTableDataSource<StatisticData>;
 
-  constructor(private statisticService: StatisticService) {
-    this.quizzesPlayedData = this.statisticService.getStatisticData('quizzesPlayed');
-    this.correctAnswersData = this.statisticService.getStatisticData('correctAnswers');
-    this.averagePointsData = this.statisticService.getStatisticData('averagePoints');
-    this.averageTimeData = this.statisticService.getStatisticData('averageTime');
+  private _statisticData: StatisticData[];
 
-    this._statisticTableData = this.statisticService.getStatisticTableData();
-    this.displayedColumns = Object.keys(this._statisticTableData[0]);
-    this.dataSource = new MatTableDataSource(this._statisticTableData);
+  constructor(public statisticService: StatisticService) {
+    this._statisticData = this.statisticService.getCurrentStatisticData();
+  }
+
+  ngOnInit(): void {
+    if (this._statisticData.length) {
+      this.isStatisticDataExist = true;
+      const getChartData = this.statisticService.getStatisticChartData.bind(this.statisticService);
+      this.quizzesPlayedData = getChartData('quizzesPlayed');
+      this.correctAnswersData = getChartData('correctAnswers');
+      this.averagePointsData = getChartData('averagePoints');
+      this.averageTimeData = getChartData('averageTime');
+
+      this.displayedColumns = ['quizType', 'quizzesCount', 'questionsCount', 'pointsCount', 'quizTimeCount'];
+      this.dataSource = new MatTableDataSource(this._statisticData);
+    }
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    if (this._statisticData.length) {
+      this.dataSource.sort = this.sort;
+    }
+
   }
 
   public toggleStatisticView(): void {

@@ -1,62 +1,68 @@
 <div class="container" [ngClass]="{'unset-text-align': showStatisticTable}">
-  <button class="statistic-toggle-btn" mat-stroked-button color="accent" (click)="toggleStatisticView()">
-    {{ toggleBtnText }}
-  </button>
-  <div class="statistic-charts-container" *ngIf="!showStatisticTable">
-    <div class="statistic-chart-container">
-      <h2 class="statistic-chart-title">Quizzes played</h2>
-      <canvas baseChart [data]="quizzesPlayedData" [type]="pieChartType">
-      </canvas>
+  <ng-container *ngIf="isStatisticDataExist; else noStatisticData">
+    <button class="statistic-toggle-btn" mat-stroked-button color="accent" (click)="toggleStatisticView()">
+      {{ toggleBtnText }}
+    </button>
+    <div class="statistic-charts-container" *ngIf="!showStatisticTable">
+      <div class="statistic-chart-container">
+        <h2 class="statistic-chart-title">Quizzes played</h2>
+        <canvas baseChart [data]="quizzesPlayedData" [type]="pieChartType">
+        </canvas>
+      </div>
+      <div class="statistic-chart-container">
+        <h2 class="statistic-chart-title">Correct answers</h2>
+        <canvas baseChart [data]="correctAnswersData" [type]="pieChartType">
+        </canvas>
+      </div>
+      <div class="statistic-chart-container">
+        <h2 class="statistic-chart-title">Average value of points</h2>
+        <canvas baseChart [data]="averagePointsData" [type]="pieChartType">
+        </canvas>
+      </div>
+      <div class="statistic-chart-container">
+        <h2 class="statistic-chart-title">Average time of answering</h2>
+        <canvas baseChart [data]="averageTimeData" [type]="pieChartType">
+        </canvas>
+      </div>
     </div>
-    <div class="statistic-chart-container">
-      <h2 class="statistic-chart-title">Correct answers</h2>
-      <canvas baseChart [data]="correctAnswersData" [type]="pieChartType">
-      </canvas>
-    </div>
-    <div class="statistic-chart-container">
-      <h2 class="statistic-chart-title">Average value of points</h2>
-      <canvas baseChart [data]="averagePointsData" [type]="pieChartType">
-      </canvas>
-    </div>
-    <div class="statistic-chart-container">
-      <h2 class="statistic-chart-title">Average time of answering</h2>
-      <canvas baseChart [data]="averageTimeData" [type]="pieChartType">
-      </canvas>
-    </div>
-  </div>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 statistic-table"
-    [hidden]="!showStatisticTable">
-    <ng-container matColumnDef="quizType">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Quiz Type
-      </th>
-      <td mat-cell *matCellDef="let element"> {{element.quizType}} </td>
-    </ng-container>
-    <ng-container matColumnDef="quizzesCount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Quizzes played
-      </th>
-      <td mat-cell *matCellDef="let element"> {{element.quizzesCount}} </td>
-    </ng-container>
-    <ng-container matColumnDef="questionsCount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Correct answers
-      </th>
-      <td mat-cell *matCellDef="let element"> {{element.questionsCount}} </td>
-    </ng-container>
-    <ng-container matColumnDef="pointsCount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Average value of points
-      </th>
-      <td mat-cell *matCellDef="let element"> {{element.pointsCount}} </td>
-    </ng-container>
-    <ng-container matColumnDef="quizTimeCount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        Average time of answering
-      </th>
-      <td mat-cell *matCellDef="let element"> {{element.quizTimeCount | convertMilliseconds }} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 statistic-table"
+      [hidden]="!showStatisticTable">
+      <ng-container matColumnDef="quizType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Quiz Type
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.quizType}} </td>
+      </ng-container>
+      <ng-container matColumnDef="quizzesCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Quizzes played
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.quizzesCount}} </td>
+      </ng-container>
+      <ng-container matColumnDef="questionsCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Correct answers
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.questionsCount}} </td>
+      </ng-container>
+      <ng-container matColumnDef="pointsCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Points
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.pointsCount}} </td>
+      </ng-container>
+      <ng-container matColumnDef="quizTimeCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Time of answering
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.quizTimeCount | convertMilliseconds }} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </ng-container>
+  <ng-template #noStatisticData>
+    <p>You don't have any statistic yet</p>
+    <p>Play quizzes to see it</p>
+  </ng-template>
 </div>

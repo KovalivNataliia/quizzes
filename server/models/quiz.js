@@ -25,7 +25,7 @@ const quizSchema = new Schema({
     type: String,
     required: true
   }]
-});
+}, { versionKey: false });
 
 const quizDataSchema = new Schema({
   userId: {

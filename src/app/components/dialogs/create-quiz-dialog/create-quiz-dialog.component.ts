@@ -23,11 +23,10 @@ export class CreateQuizDialogComponent implements OnDestroy {
     private dialogRef: MatDialogRef<CreateQuizDialogComponent>,
     private quizService: QuizService
   ) {
-    this._subscriptions.add(
-      this.quizService.getQuizCategories().subscribe(categories => {
-        this.quizCategories = categories;
-      })
-    );
+    const sub = this.quizService.getQuizCategories().subscribe(categories => {
+      this.quizCategories = categories;
+    })
+    this._subscriptions.add(sub);
   }
 
   public cancel(): void {
@@ -35,12 +34,11 @@ export class CreateQuizDialogComponent implements OnDestroy {
   }
 
   public getQuestionCount(): void {
-    this._subscriptions.add(
-      this.quizService.getQuestionCount(this.categoryId).subscribe(questionCount => {
-        const key = `total_${this.quizDifficulty}_question_count`;
-        this.maxQuestionCount = questionCount[key] > 50 ? 50 : questionCount[key];
-      })
-    );
+    const sub = this.quizService.getQuestionCount(this.categoryId).subscribe(questionCount => {
+      const key = `total_${this.quizDifficulty}_question_count`;
+      this.maxQuestionCount = questionCount[key] > 50 ? 50 : questionCount[key];
+    })
+    this._subscriptions.add(sub);
   }
 
   ngOnDestroy(): void {
