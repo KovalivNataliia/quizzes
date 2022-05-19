@@ -8,9 +8,8 @@ export class ErrorHandlerService implements ErrorHandler {
   constructor(private snackBar: MatSnackBar, private zone: NgZone) { }
 
   handleError(error: Error | HttpErrorResponse): void {
-    // this.zone.run(() => {
-    //   this.snackBar.open(error.message, 'Close', { duration: 5000, panelClass: ['snackbar'] });
-    // });
-    console.log(error)
+    this.zone.run(() => {
+      this.snackBar.open(error.message, 'Close', { duration: 5000, panelClass: ['snackbar'] });
+    });
   }
 }
