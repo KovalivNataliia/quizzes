@@ -1,5 +1,5 @@
 export interface QuizResult {
-  correctAnswersCount: number,
+  questionsCount: number,
   pointsCount: number,
   quizTimeCount: number
 }

@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '@services/authorization.service';
-import { Subscription } from 'rxjs';
+import { StatisticService } from '@services/statistic.service';
+import { Subscription, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-authorization-page',
@@ -25,7 +26,8 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthorizationService
+    private authService: AuthorizationService,
+    private statisticService: StatisticService
   ) { }
 
   ngOnInit(): void {
@@ -44,11 +46,15 @@ export class AuthorizationPageComponent implements OnInit, OnDestroy {
       );
     } else {
       this._subscriptions.add(
-        this.authService.loginUser(this.form.value).subscribe(data => {
-          if (data.message === 'Success') {
+        this.authService.loginUser(this.form.value).pipe(
+          tap(data => {
             this.authService.storeUser(data);
-            this.router.navigate(['/home']);
-          }
+          }),
+          switchMap(() => this.statisticService.getUserStatistic()),
+        ).subscribe(statistic => {
+          statistic = statistic || [];
+          this.statisticService.setStatistic(statistic);
+          this.router.navigate(['/home']);
         })
       );
     }

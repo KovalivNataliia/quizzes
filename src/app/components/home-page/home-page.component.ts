@@ -5,6 +5,8 @@ import { QuizData } from '@shared/interfaces/quizData.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { AuthorizationService } from '@services/authorization.service';
+import { StatisticService } from '@services/statistic.service';
+import { StatisticData } from '@shared/interfaces/statisticData.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -21,13 +23,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private _quizData!: Partial<QuizData>;
   private _preservedQuizzes!: QuizData[];
   private _sortValue!: string;
+  private _userStatistic: StatisticData[];
 
   constructor(
     private quizService: QuizService,
     private router: Router,
-    private authService: AuthorizationService
+    private authService: AuthorizationService,
+    private statisticService: StatisticService
   ) {
     this.quizzes = this.quizService.getQuizzes();
+    this._userStatistic = this.statisticService.getCurrentStatisticData();
   }
 
   ngOnInit(): void {
@@ -44,6 +49,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
               this.quizService.updateQuizzes(this.quizzes);
             })
           }
+        })
+      );
+    }
+    if (this._isAuth$.value && !this._userStatistic) {
+      this._subscriptions.add(
+        this.statisticService.getUserStatistic().subscribe(statistic => {
+          statistic = statistic || [];
+          this.statisticService.setStatistic(statistic);
         })
       );
     }

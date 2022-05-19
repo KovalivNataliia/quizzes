@@ -1,4 +1,5 @@
-export interface StatisticTableData {
+export interface StatisticData {
+  userId?: string,
   quizType: string,
   quizzesCount: number,
   questionsCount: number,

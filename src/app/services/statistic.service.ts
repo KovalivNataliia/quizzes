@@ -1,36 +1,74 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { QuizResult } from "@shared/interfaces/quizResult.interface";
-import { StatisticTableData } from "@shared/interfaces/statisticTableData.interface";
-import { UserStatisticData } from "@shared/interfaces/userStatisticData.interface";
+import { StatisticData } from "@shared/interfaces/statisticData.interface";
 import { ChartData } from "chart.js";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticService {
 
-  private _userStatistic = JSON.parse(localStorage.getItem('userStatistic')!) || {};
+  private _userStatistic!: StatisticData[];
+  private _url = 'http://localhost:8080/api/users/statistic';
+  private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  public saveStatistic(quizName: string, quizResult: QuizResult): void {
-    let { correctAnswersCount: questionsCount, pointsCount, quizTimeCount } = quizResult;
+  constructor(private http: HttpClient) { }
+
+  public getStatisticData(quizType: string, quizResult: QuizResult): StatisticData {
+    let { questionsCount, pointsCount, quizTimeCount } = quizResult;
     let quizzesCount = 1;
-    const currentQuizTypeStatistic = this._userStatistic[quizName];
-    if (currentQuizTypeStatistic) {
-      quizzesCount = currentQuizTypeStatistic.quizzesCount + 1;
-      questionsCount = currentQuizTypeStatistic.questionsCount + questionsCount;
-      pointsCount = currentQuizTypeStatistic.pointsCount + pointsCount;
-      quizTimeCount = currentQuizTypeStatistic.quizTimeCount + quizTimeCount;
+    let currentQuizType = this._userStatistic.find(statistic => statistic.quizType === quizType);
+    if (currentQuizType) {
+      quizzesCount = currentQuizType.quizzesCount + 1;
+      questionsCount = currentQuizType.questionsCount + questionsCount;
+      pointsCount = currentQuizType.pointsCount + pointsCount;
+      quizTimeCount = currentQuizType.quizTimeCount + quizTimeCount;
     }
-    this._userStatistic[quizName] = { quizzesCount, questionsCount, pointsCount, quizTimeCount };
-    localStorage.setItem('userStatistic', JSON.stringify(this._userStatistic));
+    const userId = JSON.parse(sessionStorage.getItem('user')!).userId;
+    currentQuizType = { userId, quizType, quizzesCount, questionsCount, pointsCount, quizTimeCount };
+    return currentQuizType;
   }
 
-  public getStatistic(): UserStatisticData {
+  public getUserStatistic(): Observable<StatisticData[]> {
+    return this.http.get(this._url, { headers: this._headers }).pipe(
+      map((response: any) => response.statistic)
+    )
+  }
+
+  public updateUserStatistic(statisticData: StatisticData): Observable<StatisticData> {
+    return this.http.put(this._url, statisticData, { headers: this._headers }).pipe(
+      map((response: any) => response.statistic)
+    );
+  }
+
+  public getCurrentStatisticData(): StatisticData[] {
     return this._userStatistic;
   }
 
-  public getStatisticData(dataType: string): ChartData<'pie'> {
-    const statistic = this.getStatistic();
+  public updateCurrentStatisticData(statisticData: StatisticData): void {
+    const currentQuizType = this._userStatistic.find(statistic => {
+      return statistic.quizType === statisticData.quizType
+    });
+    if (!currentQuizType) {
+      this._userStatistic.push(statisticData);
+    } else {
+      this._userStatistic.map((el, idx, arr) => {
+        if (el.quizType === statisticData.quizType) {
+          arr.splice(idx, 1, statisticData);
+        }
+      })
+    }
+  }
+
+  public setStatistic(statistic: StatisticData[]): void {
+    this._userStatistic = statistic;
+  }
+
+  public getStatisticChartData(dataType: string): ChartData<'pie'> {
+    const statistic = this.getCurrentStatisticData();
     const chartData = [];
     for (let key in statistic) {
       let type = statistic[key];
@@ -53,22 +91,18 @@ export class StatisticService {
     return this._getChartData(chartData);
   }
 
-  public getStatisticTableData(): StatisticTableData[] {
-    const statistic = this.getStatistic();
-    const statisticTableData = [];
-    for (let key in statistic) {
-      statisticTableData.push({quizType: key, ...statistic[key]})
-    }
-    return statisticTableData;
-  }
-
   private _getChartData(chartData: number[]): ChartData<'pie'> {
     const quizzesTypes = this._getQuzzesTypes();
     return { labels: quizzesTypes, datasets: [{ data: chartData }] };
   }
 
   private _getQuzzesTypes(): string[] {
-    return Object.keys(this._userStatistic);
+    const statistic = this.getCurrentStatisticData();
+    const quizzesTypes = [];
+    for (let obj of statistic) {
+      quizzesTypes.push(obj.quizType);
+    }
+    return quizzesTypes;
   }
 
   private _convertMilliseconds(milliseconds: number): number {

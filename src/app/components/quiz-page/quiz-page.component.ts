@@ -3,6 +3,8 @@ import { map, Observable, Subscription } from 'rxjs';
 import { QuizService } from '@services/quiz.service';
 import { DialogService } from '@services/dialog.service';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '@services/authorization.service';
+import { StatisticService } from '@services/statistic.service';
 
 @Component({
   selector: 'app-quiz-page',
@@ -18,10 +20,13 @@ export class QuizPageComponent implements OnDestroy {
   public userAnswers: string[] = [];
   private _state$ = this.quizService.getState();
   private _subscriptions = new Subscription();
+  private _isAuth$ = this.authService.isAuth$;
 
   constructor(
     private quizService: QuizService,
     private dialogService: DialogService,
+    private authService: AuthorizationService,
+    private statisticService: StatisticService,
     private router: Router
   ) {
     this.questionCount$ = this._state$.pipe(
@@ -69,7 +74,15 @@ export class QuizPageComponent implements OnDestroy {
         () => this.router.navigate(['/home'])
       )
     );
-
+    if (this._isAuth$.value) {
+      const quizType = this.quizService.getQuizType(quizId);
+      const currentStatisticData = this.statisticService.getStatisticData(quizType, quizResult);
+      this._subscriptions.add(
+        this.statisticService.updateUserStatistic(currentStatisticData).subscribe(data => {
+          this.statisticService.updateCurrentStatisticData(data);
+        })
+      );
+    }
   }
 
   public canDeactivate(): Observable<boolean> | boolean {

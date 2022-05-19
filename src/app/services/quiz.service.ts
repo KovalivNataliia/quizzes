@@ -8,7 +8,6 @@ import { QuizResult } from '@shared/interfaces/quizResult.interface';
 import { QuizData } from '@shared/interfaces/quizData.interface';
 import { QuizCategory } from '@shared/interfaces/quizCategory.interface';
 import { CreateQuizData } from '@shared/interfaces/createQuizData.interface';
-import { StatisticService } from '@services/statistic.service';
 import { QuizResData } from '@shared/interfaces/quizResData.interface';
 
 @Injectable({
@@ -26,7 +25,7 @@ export class QuizService {
   private _url = 'http://localhost:8080/api/quizzes/';
   private _headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  constructor(private http: HttpClient, private statisticService: StatisticService) { }
+  constructor(private http: HttpClient) { }
 
   public getQuizzes(): QuizData[] {
     return this._quizzes;
@@ -128,12 +127,10 @@ export class QuizService {
   public getQuizResult(userAnswers: string[]): QuizResult {
     const state = this.getStateValue();
     state.quizEndTime = performance.now();
-    const correctAnswersCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
-    const pointsCount = correctAnswersCount * state.pointsPerQuestion;
+    const questionsCount = this._countCorrectAnswers(userAnswers, state.currentQuiz);
+    const pointsCount = questionsCount * state.pointsPerQuestion;
     const quizTimeCount = state.quizEndTime - state.quizStartTime;
-    const quizName = this._getQuizName(state.currentQuizId);
-    const quizResult = { correctAnswersCount, pointsCount, quizTimeCount }
-    this.statisticService.saveStatistic(quizName, quizResult);
+    const quizResult = { questionsCount, pointsCount, quizTimeCount }
     this._setPartialState({
       isQuizDataSaved: true
     });
@@ -182,6 +179,11 @@ export class QuizService {
     currentQuiz!.timesPlayed++
   }
 
+  public getQuizType(quizId: string | undefined): string {
+    const currentQuiz = this._quizzes.find(quizData => quizData._id === quizId);
+    return currentQuiz ? currentQuiz.quizName : 'Random quiz';
+  }
+
   private _setPartialState(partialState: Partial<QuizState>): void {
     this._state$.next({ ...this.getStateValue(), ...partialState });
   }
@@ -194,11 +196,6 @@ export class QuizService {
       }
     }
     return correctAnswersCount;
-  }
-
-  private _getQuizName(quizId: string | undefined): string {
-    const currentQuiz = this._quizzes.find(quizData => quizData._id === quizId);
-    return currentQuiz ? currentQuiz.quizName : 'Random quiz';
   }
 
 }

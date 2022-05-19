@@ -4,6 +4,6 @@
 <div mat-dialog-content class="result-dialog-content">
   <h2 class="result-dialog-title">Your result:</h2>
   <p>Total points: <b>{{ data.pointsCount }}</b></p>
-  <p>Correct answers: <b>{{ data.correctAnswersCount }} / {{ questionCount$ | async }}</b></p>
+  <p>Correct answers: <b>{{ data.questionsCount }} / {{ questionCount$ | async }}</b></p>
   <p>Total time: <b>{{ data.quizTimeCount | convertMilliseconds }}</b></p>
 </div>
