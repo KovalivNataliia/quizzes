@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import { CreateQuizDialogComponent } from './create-quiz-dialog.component';
 
@@ -8,9 +10,13 @@ describe('CreateQuizDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateQuizDialogComponent ]
+      imports: [HttpClientTestingModule],
+      declarations: [CreateQuizDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

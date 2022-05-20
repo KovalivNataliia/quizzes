@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatisticPageComponent } from './statistic-page.component';
@@ -8,9 +9,10 @@ describe('StatisticPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StatisticPageComponent ]
+      imports: [HttpClientTestingModule],
+      declarations: [StatisticPageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -13,10 +13,10 @@ import { StatisticService } from '@services/statistic.service';
 })
 export class QuizPageComponent implements OnDestroy {
 
-  public questionCount$: Observable<number>;
-  public currentQuestionIndex$: Observable<number>;
-  public currentQuestion$: Observable<string>;
-  public currentAnswers$: Observable<string[]>;
+  public questionCount$!: Observable<number>;
+  public currentQuestionIndex$!: Observable<number>;
+  public currentQuestion$!: Observable<string>;
+  public currentAnswers$!: Observable<string[]>;
   public userAnswers: string[] = [];
   private _state$ = this.quizService.getState();
   private _subscriptions = new Subscription();
@@ -29,18 +29,20 @@ export class QuizPageComponent implements OnDestroy {
     private statisticService: StatisticService,
     private router: Router
   ) {
-    this.questionCount$ = this._state$.pipe(
-      map((state) => state.currentQuiz.length)
-    );
-    this.currentQuestionIndex$ = this._state$.pipe(
-      map((state) => state.currentQuestionIndex)
-    );
-    this.currentQuestion$ = this._state$.pipe(
-      map((state) => state.currentQuiz[state.currentQuestionIndex].question)
-    );
-    this.currentAnswers$ = this._state$.pipe(
-      map((state) => state.currentAnswers)
-    );
+    if (this._state$) {
+      this.questionCount$ = this._state$.pipe(
+        map((state) => state.currentQuiz.length)
+      );
+      this.currentQuestionIndex$ = this._state$.pipe(
+        map((state) => state.currentQuestionIndex)
+      );
+      this.currentQuestion$ = this._state$.pipe(
+        map((state) => state.currentQuiz[state.currentQuestionIndex].question)
+      );
+      this.currentAnswers$ = this._state$.pipe(
+        map((state) => state.currentAnswers)
+      );
+    }
   }
 
   public nextQuestion(): void {

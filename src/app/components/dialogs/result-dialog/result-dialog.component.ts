@@ -11,16 +11,18 @@ import { QuizResult } from '@shared/interfaces/quizResult.interface';
 })
 export class ResultDialogComponent {
 
-  public questionCount$: Observable<number>;
+  public questionCount$!: Observable<number>;
   private _state$ = this.quizService.getState();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: QuizResult,
     private quizService: QuizService
-  ) { 
-    this.questionCount$ = this._state$.pipe(
-      map((state) => state.currentQuiz.length)
-    );
+  ) {
+    if (this._state$) {
+      this.questionCount$ = this._state$.pipe(
+        map((state) => state.currentQuiz.length)
+      );
+    }
   }
 
 }

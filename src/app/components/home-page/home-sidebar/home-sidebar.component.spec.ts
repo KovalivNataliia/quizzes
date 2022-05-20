@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { HomeSidebarComponent } from './home-sidebar.component';
 
@@ -8,9 +11,13 @@ describe('HomeSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeSidebarComponent ]
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      declarations: [HomeSidebarComponent],
+      providers: [
+        { provide: MatDialog, useValue: {} }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
