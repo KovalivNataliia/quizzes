@@ -36,9 +36,8 @@ describe('QuizCardComponent', () => {
 
   it('should emit on click remove quiz button', () => {
     const quizId = component.quizData._id;
-    spyOn(component.emitRemoveQuiz, 'emit');
+    const event = spyOn(component.emitRemoveQuiz, 'emit');
     component.removeQuiz(quizId);
-    expect(component.emitRemoveQuiz.emit).toHaveBeenCalled();
-    expect(component.emitRemoveQuiz.emit).toHaveBeenCalledWith({ quizId });
+    expect(event).toHaveBeenCalledWith({ quizId });
   });
 });
