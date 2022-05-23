@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, ViewChild } from '@angular/core';
 import { StatisticService } from '@services/statistic.service';
 import { ChartData, ChartType } from 'chart.js';
 import { MatSort } from '@angular/material/sort';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './statistic-page.component.html',
   styleUrls: ['./statistic-page.component.scss']
 })
-export class StatisticPageComponent implements AfterViewChecked {
+export class StatisticPageComponent implements AfterViewChecked, OnDestroy {
 
   public showStatisticTable = false;
   public toggleBtnText = 'Table';
@@ -62,6 +62,10 @@ export class StatisticPageComponent implements AfterViewChecked {
   public toggleStatisticView(): void {
     this.showStatisticTable = !this.showStatisticTable;
     this.toggleBtnText = this.showStatisticTable ? 'Charts' : 'Table';
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.unsubscribe();
   }
 
 }

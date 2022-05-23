@@ -42,6 +42,8 @@ export class QuizPageComponent implements OnDestroy {
       this.currentAnswers$ = this._state$.pipe(
         map((state) => state.currentAnswers)
       );
+    } else {
+      this.router.navigate(['/home']);
     }
   }
 
@@ -85,9 +87,11 @@ export class QuizPageComponent implements OnDestroy {
   }
 
   public canDeactivate(): Observable<boolean> | boolean {
-    const state = this.quizService.getStateValue();
-    if (!state.isQuizDataSaved) {
-      return this.dialogService.openLeaveQuizDialog();
+    if (this._state$) {
+      const state = this.quizService.getStateValue();
+      if (!state.isQuizDataSaved) {
+        return this.dialogService.openLeaveQuizDialog();
+      }
     }
     return true;
   }

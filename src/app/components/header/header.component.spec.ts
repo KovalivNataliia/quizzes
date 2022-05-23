@@ -4,6 +4,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 
 import { HeaderComponent } from './header.component';
 import { ImagePathPipe } from '@pipes/image-path.pipe';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -13,6 +14,7 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [HeaderComponent, ImagePathPipe],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   });

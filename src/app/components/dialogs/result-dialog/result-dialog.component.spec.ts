@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConvertMillisecondsPipe } from '@pipes/convert-milliseconds.pipe';
 import { QuizService } from '@services/quiz.service';
 
@@ -12,12 +13,13 @@ describe('ResultDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatDialogModule],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: [] },
         { provide: QuizService },
       ],
-      declarations: [ResultDialogComponent, ConvertMillisecondsPipe]
+      declarations: [ResultDialogComponent, ConvertMillisecondsPipe],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   });

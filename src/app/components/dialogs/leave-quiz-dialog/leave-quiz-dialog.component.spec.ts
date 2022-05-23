@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { LeaveQuizDialogComponent } from './leave-quiz-dialog.component';
 
@@ -8,9 +9,10 @@ describe('LeaveQuizDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LeaveQuizDialogComponent ]
+      declarations: [LeaveQuizDialogComponent],
+      imports: [MatDialogModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
