@@ -156,3 +156,9 @@ export const StateData = {
   "quizEndTime": 13564.5,
   "isQuizDataSaved": true
 }
+
+export const QuizResult = {
+  "questionsCount": 2,
+  "pointsCount": 200,
+  "quizTimeCount": 11225.100000023842
+}

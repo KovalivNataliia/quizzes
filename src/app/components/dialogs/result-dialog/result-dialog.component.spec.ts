@@ -39,9 +39,10 @@ describe('ResultDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should assign question count value', () => {
+  it('should assign question count value', (done: DoneFn) => {
     component.questionCount$.subscribe(value => {
       expect(value).toBe(10);
+      done();
     })
   });
 });
