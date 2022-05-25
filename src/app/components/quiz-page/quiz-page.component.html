@@ -23,7 +23,7 @@
       Next
     </button>
     <ng-template #showResultsBtn>
-      <button class="quiz-btn" mat-raised-button color="primary"
+      <button class="quiz-btn result-btn" mat-raised-button color="primary"
       (click)="showResults()" [disabled]="!userAnswers[(currentQuestionIndex$ | async)!]">
       Show results
     </button>

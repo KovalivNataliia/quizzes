@@ -47,7 +47,6 @@ export class StatisticPageComponent implements AfterViewChecked, OnDestroy {
 
         this.displayedColumns = ['quizType', 'quizzesCount', 'questionsCount', 'pointsCount', 'quizTimeCount'];
         this.dataSource = new MatTableDataSource(this._statisticData);
-        this.dataSource.sort = this.sort;
       }
     })
     this._subscriptions.add(sub);
