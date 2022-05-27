@@ -307,7 +307,7 @@ export const QuizCategories = [
 export const QuestionCount = {
   "total_question_count": 97,
   "total_easy_question_count": 31,
-  "total_medium_question_count": 40,
+  "total_medium_question_count": 60,
   "total_hard_question_count": 26
 }
 
@@ -330,3 +330,18 @@ export const UserResData = {
   token: 'token',
   message: 'Success'
 }
+
+export const QuizAnswers = [
+  [
+      "Marie Curie",
+      "Alexander Flemming",
+      "Alfred Nobel",
+      "Louis Pasteur"
+  ],
+  [
+      "Ned Stark",
+      "Frank Stark",
+      "Jim Kane",
+      "Jim Stark"
+  ]
+]

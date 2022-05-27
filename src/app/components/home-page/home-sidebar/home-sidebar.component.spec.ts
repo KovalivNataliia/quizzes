@@ -14,9 +14,10 @@ import { CreateQuizData } from '@shared/test-data';
 describe('HomeSidebarComponent', () => {
   let component: HomeSidebarComponent;
   let fixture: ComponentFixture<HomeSidebarComponent>;
-  const createQuizData = CreateQuizData;
+
   const mockDialogService = jasmine.createSpyObj(['openCreateQuizDialog']);
-  mockDialogService.openCreateQuizDialog.and.returnValue(of(createQuizData));
+  mockDialogService.openCreateQuizDialog.and.returnValue(of(CreateQuizData));
+
   const routerSpy = { navigate: jasmine.createSpy('navigate') };
 
   beforeEach(async () => {
@@ -68,8 +69,7 @@ describe('HomeSidebarComponent', () => {
   it('should emit create quiz data on click create quiz button', () => {
     const event = spyOn(component.emitCreateQuiz, 'emit');
     component.createQuiz();
-    mockDialogService.openCreateQuizDialog().subscribe(() => createQuizData);
-    expect(event).toHaveBeenCalledWith(createQuizData);
+    expect(event).toHaveBeenCalledWith(CreateQuizData);
   });
 
   it('should navigate to statistic page on click show statistic button', () => {

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,6 +19,7 @@ describe('QuizPageComponent', () => {
   let component: QuizPageComponent;
   let fixture: ComponentFixture<QuizPageComponent>;
   let debugEl: DebugElement;
+
   const mockQuizService = jasmine.createSpyObj([
     'getState', 'nextQuestion', 'previousQuestion', 'getStateValue',
     'updateQuiz', 'changeTimesPlayedData', 'getQuizResult', 'getQuizType'
@@ -27,8 +28,10 @@ describe('QuizPageComponent', () => {
   mockQuizService.getStateValue.and.returnValue(StateData);
   mockQuizService.updateQuiz.and.returnValue(of({ message: 'Success' }));
   mockQuizService.getQuizType.and.returnValue('Random quiz');
+
   const mockDialogService = jasmine.createSpyObj(['openLeaveQuizDialog', 'openResultDialog']);
   mockDialogService.openResultDialog.and.returnValue(of(true));
+  
   const mockStatisticService = jasmine.createSpyObj(['getStatisticData', 'updateUserStatistic', 'updateCurrentStatisticData']);
   mockStatisticService.getStatisticData.and.returnValue(StatisticData);
   mockStatisticService.updateUserStatistic.and.returnValue(of(StatisticData));
