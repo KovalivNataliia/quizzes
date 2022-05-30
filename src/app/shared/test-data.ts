@@ -18,6 +18,26 @@ export const QuizData = {
   ]
 }
 
+export const QuizData2 = {
+  "_id": "62879a4c849f2ad032c01f59",
+  "userId": "6281ff8cf79c2bc5b56a25da",
+  "quizName": "Sports",
+  "pointsPerQuestion": 50,
+  "timesPlayed": 10,
+  "createdByUser": true,
+  "quiz": [
+    {
+      "category": "Sports",
+      "type": "multiple",
+      "difficulty": "easy",
+      "question": "What team did England beat to win in the 1966 World Cup final?",
+      "correct_answer": "West Germany",
+      "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+      "_id": "62879a4c849f2ad032c01f5a"
+    }
+  ]
+}
+
 export const CreateQuizData = {
   "questionCount": 1,
   "categoryId": "25",
@@ -154,6 +174,64 @@ export const StateData = {
   "currentQuestionIndex": 9,
   "pointsPerQuestion": 100,
   "quizStartTime": 3388.2000000476837,
+  "quizEndTime": 1114.0999999940395,
+  "isQuizDataSaved": true
+}
+
+export const StateData2 = {
+  "currentQuiz": [
+    {
+      "category": "Entertainment: Video Games",
+      "type": "multiple",
+      "difficulty": "easy",
+      "question": "What&#039;s the name of the main protagonist in the &quot;Legend of Zelda&quot; franchise?",
+      "correct_answer": "Link",
+      "incorrect_answers": [
+        "Mario",
+        "Zelda",
+        "Pit"
+      ]
+    }
+  ],
+  "currentAnswers":   [
+    "Marie Curie",
+    "Alexander Flemming",
+    "Alfred Nobel",
+    "Louis Pasteur"
+  ],
+  "currentQuizId": '1',
+  "currentQuestionIndex": 0,
+  "pointsPerQuestion": 100,
+  "quizStartTime": 3388.2000000476837,
+  "quizEndTime": 1114.0999999940395,
+  "isQuizDataSaved": true
+}
+
+export const StateData3 = {
+  "currentQuiz": [
+    {
+      "category": "Entertainment: Video Games",
+      "type": "multiple",
+      "difficulty": "easy",
+      "question": "What&#039;s the name of the main protagonist in the &quot;Legend of Zelda&quot; franchise?",
+      "correct_answer": "Ned Stark",
+      "incorrect_answers": [
+        "Mario",
+        "Zelda",
+        "Pit"
+      ]
+    }
+  ],
+  "currentAnswers": [
+    "Ned Stark",
+    "Frank Stark",
+    "Jim Kane",
+    "Jim Stark"
+  ],
+  "currentQuizId": '1',
+  "currentQuestionIndex": 1,
+  "pointsPerQuestion": 100,
+  "quizStartTime": 3388.2000000476837,
   "quizEndTime": 13564.5,
   "isQuizDataSaved": true
 }
@@ -169,6 +247,26 @@ export const StatisticData = {
   "userId": "6281ff8cf79c2bc5b56a25da",
   "quizType": "Art",
   "quizzesCount": 2,
+  "questionsCount": 0,
+  "pointsCount": 0,
+  "quizTimeCount": 3641.799999922514
+}
+
+export const StatisticData2 = {
+  "_id": "628ce9ec53598be25f7d5714",
+  "userId": "6281ff8cf79c2bc5b56a25da",
+  "quizType": "Art",
+  "quizzesCount": 3,
+  "questionsCount": 0,
+  "pointsCount": 0,
+  "quizTimeCount": 3641.799999922514
+}
+
+export const StatisticData3 = {
+  "_id": "628ce9ec53598be25f7d5714",
+  "userId": "6281ff8cf79c2bc5b56a25da",
+  "quizType": "Films",
+  "quizzesCount": 3,
   "questionsCount": 0,
   "pointsCount": 0,
   "quizTimeCount": 3641.799999922514
@@ -333,15 +431,162 @@ export const UserResData = {
 
 export const QuizAnswers = [
   [
-      "Marie Curie",
-      "Alexander Flemming",
-      "Alfred Nobel",
-      "Louis Pasteur"
+    "Marie Curie",
+    "Alexander Flemming",
+    "Alfred Nobel",
+    "Louis Pasteur"
   ],
   [
-      "Ned Stark",
-      "Frank Stark",
-      "Jim Kane",
-      "Jim Stark"
+    "Ned Stark",
+    "Frank Stark",
+    "Jim Kane",
+    "Jim Stark"
   ]
+]
+
+export const CurrentQuizTypeStatistic = {
+  "userId": "6281ff8cf79c2bc5b56a25da",
+  "quizType": "Art",
+  "quizzesCount": 3,
+  "questionsCount": 2,
+  "pointsCount": 200,
+  "quizTimeCount": 14866.899999946356
+}
+
+export const QuizzesSortingData = [
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "Sports",
+    "pointsPerQuestion": 30,
+    "timesPlayed": 0,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  },
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "TV",
+    "pointsPerQuestion": 30,
+    "timesPlayed": 0,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  },
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "Art",
+    "pointsPerQuestion": 40,
+    "timesPlayed": 1,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      },
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  }
+]
+
+export const SortedQuizzes = [
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "Art",
+    "pointsPerQuestion": 40,
+    "timesPlayed": 1,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      },
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  },
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "Sports",
+    "pointsPerQuestion": 30,
+    "timesPlayed": 0,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  },
+  {
+    "_id": "62879a4c849f2ad032c01f59",
+    "userId": "6281ff8cf79c2bc5b56a25da",
+    "quizName": "TV",
+    "pointsPerQuestion": 30,
+    "timesPlayed": 0,
+    "createdByUser": true,
+    "quiz": [
+      {
+        "category": "Sports",
+        "type": "multiple",
+        "difficulty": "easy",
+        "question": "What team did England beat to win in the 1966 World Cup final?",
+        "correct_answer": "West Germany",
+        "incorrect_answers": ["Soviet Union", "Portugal", "Brazil"],
+        "_id": "62879a4c849f2ad032c01f5a"
+      }
+    ]
+  },
 ]
